@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="me.cutmail.disasterapp.controllers.EntryDetailActivity">
+
+    <item
+        android:id="@+id/menu_item_share"
+        android:icon="@android:drawable/ic_menu_share"
+        android:title="共有"
+        app:showAsAction="always" />
+</menu>

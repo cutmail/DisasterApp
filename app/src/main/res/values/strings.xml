@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">地震・災害情報</string>
+    <string name="action_settings">設定</string>
+    <string name="action_inquiry">お問い合わせ</string>
+    <string name="action_review">Playストアで評価</string>
+    <string name="action_about">地震・災害情報について</string>
+    <string name="title_activity_entry_detail">詳細</string>
+    <string name="hello_world">Hello world!</string>
+
+</resources>

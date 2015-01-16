@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
+
+    <item android:id="@+id/action_inquiry"
+        android:title="@string/action_inquiry"
+        android:icon="@android:drawable/ic_menu_send"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/action_review"
+        android:title="@string/action_review"
+        android:icon="@android:drawable/ic_menu_edit"
+        app:showAsAction="never" />
+
+    <item android:id="@+id/action_about"
+        android:title="@string/action_about"
+        android:icon="@android:drawable/ic_menu_info_details"
+        app:showAsAction="never" />
+</menu>
