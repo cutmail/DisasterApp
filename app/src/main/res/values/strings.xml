@@ -7,6 +7,7 @@
     <string name="action_review">Playストアで評価</string>
     <string name="action_about">地震・災害情報について</string>
     <string name="title_activity_entry_detail">詳細</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_about">地震・災害情報について</string>
+    <string name="version">バージョン</string>
 
 </resources>

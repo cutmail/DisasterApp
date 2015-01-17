@@ -76,7 +76,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void openAbout() {
-
+        startActivity(new Intent(this, AboutActivity.class));
     }
 
     private void openInquiry() {
