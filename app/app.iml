@@ -89,9 +89,10 @@
     <orderEntry type="library" exported="" name="crashlytics-2.2.0" level="project" />
     <orderEntry type="library" exported="" name="Parse-1.8.1" level="project" />
     <orderEntry type="library" exported="" name="fabric-1.1.0" level="project" />
+    <orderEntry type="library" exported="" name="nendAdapter-1.2.0" level="project" />
     <orderEntry type="library" exported="" name="answers-1.1.0" level="project" />
-    <orderEntry type="library" exported="" name="appcompat-v7-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="beta-1.1.0" level="project" />
+    <orderEntry type="library" exported="" name="appcompat-v7-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="ParseCrashReporting-1.8.1" level="project" />
     <orderEntry type="library" exported="" name="butterknife-5.1.1" level="project" />

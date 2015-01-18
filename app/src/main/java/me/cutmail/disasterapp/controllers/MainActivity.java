@@ -11,6 +11,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.android.gms.ads.AdView;
+import com.google.android.gms.ads.AdRequest;
 import com.parse.ParseAnalytics;
 
 import butterknife.ButterKnife;
@@ -27,6 +29,9 @@ public class MainActivity extends ActionBarActivity {
     @InjectView(R.id.list)
     ListView listView;
 
+    @InjectView(R.id.adView)
+    AdView adView;
+
     private EntriesAdapter adapter;
 
     @Override
@@ -38,6 +43,13 @@ public class MainActivity extends ActionBarActivity {
 
         Fabric.with(this, new Crashlytics());
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
+        setupAdView();
+    }
+
+    private void setupAdView() {
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        adView.loadAd(adRequest);
     }
 
     @Override

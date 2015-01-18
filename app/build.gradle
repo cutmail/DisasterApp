@@ -46,4 +46,5 @@ dependencies {
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
     compile fileTree(dir: 'libs', include: 'ParseCrashReporting-*.jar')
     compile fileTree(dir: 'libs', include: 'nendSDK-*.jar')
+    compile fileTree(dir: 'libs', include: 'nendAdapter-*.jar')
 }
