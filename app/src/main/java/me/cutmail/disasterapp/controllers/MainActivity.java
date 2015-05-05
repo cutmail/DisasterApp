@@ -2,17 +2,15 @@ package me.cutmail.disasterapp.controllers;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.parse.ParseAnalytics;
 
 import butterknife.ButterKnife;
@@ -24,7 +22,7 @@ import me.cutmail.disasterapp.adapter.EntriesAdapter;
 import me.cutmail.disasterapp.model.Entry;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends AppCompatActivity {
 
     @InjectView(R.id.list)
     ListView listView;

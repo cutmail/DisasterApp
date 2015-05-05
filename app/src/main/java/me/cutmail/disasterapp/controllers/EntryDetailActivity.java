@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,7 +15,7 @@ import butterknife.InjectView;
 import me.cutmail.disasterapp.R;
 import me.cutmail.disasterapp.model.Entry;
 
-public class EntryDetailActivity extends ActionBarActivity {
+public class EntryDetailActivity extends AppCompatActivity {
 
     private static final String EXTRA_ENTRY = "entry";
 
