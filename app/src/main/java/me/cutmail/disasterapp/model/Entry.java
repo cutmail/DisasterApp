@@ -31,7 +31,7 @@ public class Entry implements Serializable {
     }
 
     public static List<Entry> getEntries() {
-        List<Entry> entries = new ArrayList<Entry>() {{
+        return new ArrayList<Entry>() {{
             add(new Entry("docomo 災害用伝言板", "http://dengon.docomo.ne.jp/top.cgi"));
             add(new Entry("au 災害用伝言板", "http://dengon.ezweb.ne.jp/"));
             add(new Entry("softbank 災害用伝言板", "http://dengon.softbank.ne.jp/J"));
@@ -47,6 +47,5 @@ public class Entry implements Serializable {
             add(new Entry("全国避難所一覧", "http://www.animal-navi.com/navi/map/map.html"));
             add(new Entry("鉄道運行情報", "http://www.tetsudo.com/traffic/"));
         }};
-        return entries;
     }
 }
