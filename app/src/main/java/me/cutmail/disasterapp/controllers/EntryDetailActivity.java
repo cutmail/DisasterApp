@@ -1,9 +1,11 @@
 package me.cutmail.disasterapp.controllers;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -43,8 +45,11 @@ public class EntryDetailActivity extends AppCompatActivity {
             finish();
         }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(entry.getTitle());
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(entry.getTitle());
+        }
 
         if (TextUtils.isEmpty(entry.getUrl())) {
             finish();
@@ -53,6 +58,7 @@ public class EntryDetailActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void setupWebView() {
         webView.getSettings().setJavaScriptEnabled(true);
     }
