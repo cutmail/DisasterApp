@@ -40,9 +40,11 @@ public class EntryDetailActivity extends AppCompatActivity {
 
         setupWebView();
 
-        entry = (Entry) getIntent().getSerializableExtra(EXTRA_ENTRY);
-        if (entry == null) {
-            finish();
+        if (getIntent() != null) {
+            entry = (Entry) getIntent().getSerializableExtra(EXTRA_ENTRY);
+            if (entry == null) {
+                finish();
+            }
         }
 
         ActionBar actionBar = getSupportActionBar();
