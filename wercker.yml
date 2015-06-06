@@ -10,9 +10,9 @@ build:
           echo $ANDROID_BUILD_TOOLS
           echo $ANDROID_UPDATE_FILTER
     - android-sdk-update:
-        filter: sysimg-21
+        filter: sysimg-22
     - setup-android-emulator:
-        target: android-21
+        target: android-22
     - script:
         name: run gradle createDebugCoverageReport
         code: |
