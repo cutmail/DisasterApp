@@ -1,5 +1,6 @@
 package me.cutmail.disasterapp.controllers;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -89,16 +90,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openInquiry() {
-        Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.setData(Uri.parse("mailto:cutmailapp@gmail.com"));
-        intent.putExtra(Intent.EXTRA_SUBJECT, "[地震・災害情報] お問い合わせ");
-        intent.putExtra(Intent.EXTRA_TEXT, "こちらにお問い合わせ内容をご記入ください。");
-        startActivity(intent);
+        try {
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:cutmailapp@gmail.com"));
+            intent.putExtra(Intent.EXTRA_SUBJECT, "[地震・災害情報] お問い合わせ");
+            intent.putExtra(Intent.EXTRA_TEXT, "こちらにお問い合わせ内容をご記入ください。");
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Crashlytics.getInstance().core.logException(e);
+        }
     }
 
     private void openPlayStore() {
-        Uri uri = Uri.parse("market://details?id=me.cutmail.disasterapp");
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(intent);
+        try {
+            Uri uri = Uri.parse("market://details?id=me.cutmail.disasterapp");
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Crashlytics.getInstance().core.logException(e);
+        }
     }
 }
