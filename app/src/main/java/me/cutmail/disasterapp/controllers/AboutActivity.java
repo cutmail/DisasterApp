@@ -58,7 +58,7 @@ public class AboutActivity extends AppCompatActivity {
             version = getApplicationContext().getPackageManager().getPackageInfo(
                     getApplicationContext().getPackageName(), 1).versionName;
         } catch (PackageManager.NameNotFoundException e) {
-            Crashlytics.logException(e);
+            Crashlytics.getInstance().core.logException(e);
             version = "";
         }
 
