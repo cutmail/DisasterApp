@@ -10,18 +10,13 @@ build:
           echo $ANDROID_BUILD_TOOLS
           echo $ANDROID_UPDATE_FILTER
     - android-sdk-update:
-        filter: sysimg-22
+        filter: tools,platform-tools,android-21,android-22,sysimg-22,build-tools-22.0.1,extra-android-support,extra-android-m2repository
     - setup-android-emulator:
         target: android-22
     - script:
-        name: run gradle createDebugCoverageReport
-        code: |
-          gradle --project-cache-dir=$WERCKER_CACHE_DIR createDebugCoverageReport
-    - script:
         name: run gradle assembleDebug
         code: |
-          pwd
-          gradle --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR assembleDebug
+          ./gradlew --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR assembleDebug
   after-steps:
     # Use the build results
     - script:
