@@ -45,8 +45,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupAdView() {
-        AdRequest adRequest = new AdRequest.Builder()
-                .build();
+        AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
     }
 
