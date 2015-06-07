@@ -8,7 +8,6 @@ import com.parse.Parse;
 import com.parse.ParseAnonymousUtils;
 import com.parse.ParseCrashReporting;
 import com.parse.ParseInstallation;
-import com.parse.ParsePush;
 
 import java.util.HashMap;
 
@@ -41,6 +40,7 @@ public class DisasterApplication extends Application {
 
     private void setupParse() {
         ParseCrashReporting.enable(this);
+        Parse.enableLocalDatastore(this);
         Parse.initialize(this, "QL3YO70ii8CHNVyUz591gUCgfimdVqbnLmzO2SFm", "IJ5aSNUzuAcRkmwiI7IsEkH2623rJVtbZQx6azKV");
 
         ParseInstallation.getCurrentInstallation().saveInBackground();
