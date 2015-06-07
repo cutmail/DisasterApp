@@ -36,7 +36,10 @@ public class DisasterApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        setupParse();
+    }
 
+    private void setupParse() {
         ParseCrashReporting.enable(this);
         Parse.initialize(this, "QL3YO70ii8CHNVyUz591gUCgfimdVqbnLmzO2SFm", "IJ5aSNUzuAcRkmwiI7IsEkH2623rJVtbZQx6azKV");
 
