@@ -7,23 +7,24 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.parse.ParseAnalytics;
+import com.parse.ParseQueryAdapter;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnItemClick;
 import io.fabric.sdk.android.Fabric;
 import me.cutmail.disasterapp.R;
-import me.cutmail.disasterapp.adapter.EntriesAdapter;
 import me.cutmail.disasterapp.model.Entry;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     @InjectView(R.id.list)
     ListView listView;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
     @InjectView(R.id.adView)
     AdView adView;
 
-    private EntriesAdapter adapter;
+    private ParseQueryAdapter<Entry> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,15 +75,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupLayout() {
-        adapter = new EntriesAdapter(this, Entry.getEntries());
-        listView.setAdapter(adapter);
-    }
+        adapter = new ParseQueryAdapter<>(this, Entry.class, android.R.layout.simple_list_item_1);
 
-    @OnItemClick(R.id.list)
-    void onItemClicked(int position) {
-        Entry entry = adapter.getItem(position);
-        Intent intent = EntryDetailActivity.createIntent(this, entry);
-        startActivity(intent);
+        listView.setAdapter(adapter);
+        listView.setOnItemClickListener(this);
     }
 
     private void openAbout() {
@@ -109,5 +105,12 @@ public class MainActivity extends AppCompatActivity {
         } catch (ActivityNotFoundException e) {
             Crashlytics.getInstance().core.logException(e);
         }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Entry entry = adapter.getItem(position);
+        Intent intent = EntryDetailActivity.createIntent(this, entry.getTitle(), entry.getUrl());
+        startActivity(intent);
     }
 }

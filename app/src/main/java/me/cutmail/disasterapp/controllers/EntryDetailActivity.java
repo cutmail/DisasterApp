@@ -15,20 +15,21 @@ import android.webkit.WebView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import me.cutmail.disasterapp.R;
-import me.cutmail.disasterapp.model.Entry;
 
 public class EntryDetailActivity extends AppCompatActivity {
 
-    private static final String EXTRA_ENTRY = "entry";
+    private static final String EXTRA_TITLE = "title";
+    private static final String EXTRA_URL = "url";
 
-    private Entry entry;
+    private String url;
 
     @InjectView(R.id.web)
     WebView webView;
 
-    public static Intent createIntent(Context context, Entry entry) {
+    public static Intent createIntent(Context context, String title, String url) {
         Intent intent = new Intent(context, EntryDetailActivity.class);
-        intent.putExtra(EXTRA_ENTRY, entry);
+        intent.putExtra(EXTRA_TITLE, title);
+        intent.putExtra(EXTRA_URL, url);
         return intent;
     }
 
@@ -40,23 +41,23 @@ public class EntryDetailActivity extends AppCompatActivity {
 
         setupWebView();
 
-        if (getIntent() != null) {
-            entry = (Entry) getIntent().getSerializableExtra(EXTRA_ENTRY);
-            if (entry == null) {
-                finish();
-            }
+        Intent intent = getIntent();
+        if (intent == null) {
+            finish();
+            return;
         }
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle(entry.getTitle());
+            actionBar.setTitle(intent.getStringExtra(EXTRA_TITLE));
         }
 
-        if (TextUtils.isEmpty(entry.getUrl())) {
+        url = intent.getStringExtra(EXTRA_URL);
+        if (TextUtils.isEmpty(url)) {
             finish();
         } else {
-            webView.loadUrl(entry.getUrl());
+            webView.loadUrl(url);
         }
     }
 
@@ -88,7 +89,7 @@ public class EntryDetailActivity extends AppCompatActivity {
     }
 
     private void doShare() {
-        Uri uri = Uri.parse(entry.getUrl());
+        Uri uri = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         startActivity(intent);
     }

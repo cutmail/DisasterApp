@@ -8,8 +8,11 @@ import com.parse.Parse;
 import com.parse.ParseAnonymousUtils;
 import com.parse.ParseCrashReporting;
 import com.parse.ParseInstallation;
+import com.parse.ParseObject;
 
 import java.util.HashMap;
+
+import me.cutmail.disasterapp.model.Entry;
 
 public class DisasterApplication extends Application {
 
@@ -41,6 +44,7 @@ public class DisasterApplication extends Application {
     private void setupParse() {
         ParseCrashReporting.enable(this);
         Parse.enableLocalDatastore(this);
+        ParseObject.registerSubclass(Entry.class);
         Parse.initialize(this, "QL3YO70ii8CHNVyUz591gUCgfimdVqbnLmzO2SFm", "IJ5aSNUzuAcRkmwiI7IsEkH2623rJVtbZQx6azKV");
 
         ParseInstallation.getCurrentInstallation().saveInBackground();
