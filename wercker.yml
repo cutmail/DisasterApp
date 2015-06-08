@@ -17,11 +17,11 @@ build:
         name: run gradle assembleDebug
         code: |
           ./gradlew --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR assembleDebug
-  after-steps:
+    #  after-steps:
     # Use the build results
-    - script:
-        name: inspect build result
-        code: |
-          pwd
-          ls -la ./app/build/outputs/
-          cp -r ./app/build/outputs/* ${WERCKER_REPORT_ARTIFACTS_DIR}
+    #    - script:
+    #        name: inspect build result
+    #        code: |
+    #          pwd
+    #          ls -la ./app/build/outputs/
+    #          cp -r ./app/build/outputs/* ${WERCKER_REPORT_ARTIFACTS_DIR}
