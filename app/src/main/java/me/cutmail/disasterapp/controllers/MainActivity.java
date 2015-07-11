@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void setupLayout() {
         adapter = new ParseQueryAdapter<>(this, Entry.class, android.R.layout.simple_list_item_1);
+        adapter.setTextKey("title");
 
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
