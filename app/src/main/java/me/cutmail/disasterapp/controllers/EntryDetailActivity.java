@@ -1,6 +1,7 @@
 package me.cutmail.disasterapp.controllers;
 
 import android.annotation.SuppressLint;
+
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -11,6 +12,8 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
+
+import com.uphyca.galette.SendScreenView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -34,6 +37,7 @@ public class EntryDetailActivity extends AppCompatActivity {
     }
 
     @Override
+    @SendScreenView(screenName = "entry_detail")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry_detail);

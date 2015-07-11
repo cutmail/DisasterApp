@@ -8,6 +8,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
+import com.uphyca.galette.SendScreenView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -19,6 +20,7 @@ public class AboutActivity extends AppCompatActivity {
     TextView versionView;
 
     @Override
+    @SendScreenView(screenName = "about")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);

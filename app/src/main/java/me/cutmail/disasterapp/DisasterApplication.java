@@ -9,36 +9,32 @@ import com.parse.ParseAnonymousUtils;
 import com.parse.ParseCrashReporting;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
-
-import java.util.HashMap;
+import com.uphyca.galette.TrackerProvider;
 
 import me.cutmail.disasterapp.model.Entry;
 
-public class DisasterApplication extends Application {
+public class DisasterApplication extends Application implements TrackerProvider {
 
     private static final String PROPERTY_ID = "UA-3314949-13";
 
-    public enum TrackerName {
-        APP_TRACKER,
-        GLOBAL_TRACKER
-    }
-
-    HashMap<TrackerName, Tracker> trackers = new HashMap<TrackerName, Tracker>();
-
-    synchronized Tracker getTracker(TrackerName trackerId) {
-        if (!trackers.containsKey(trackerId)) {
-            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            Tracker t = analytics.newTracker(PROPERTY_ID);
-            trackers.put(trackerId, t);
-        }
-
-        return trackers.get(trackerId);
-    }
+    private Tracker tracker;
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        setupGoogleAnalytics();
         setupParse();
+    }
+
+    @Override
+    public Tracker getByName(String trackerName) {
+        return tracker;
+    }
+
+    private void setupGoogleAnalytics() {
+        GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+        tracker = analytics.newTracker(PROPERTY_ID);
     }
 
     private void setupParse() {

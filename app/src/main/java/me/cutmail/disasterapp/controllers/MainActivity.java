@@ -16,6 +16,8 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.parse.ParseAnalytics;
 import com.parse.ParseQueryAdapter;
+import com.uphyca.galette.SendEvent;
+import com.uphyca.galette.SendScreenView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private ParseQueryAdapter<Entry> adapter;
 
     @Override
+    @SendScreenView(screenName = "main")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -109,6 +112,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     @Override
+    @SendEvent(category = "entry", action = "click")
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Entry entry = adapter.getItem(position);
         Intent intent = EntryDetailActivity.createIntent(this, entry.getTitle(), entry.getUrl());
