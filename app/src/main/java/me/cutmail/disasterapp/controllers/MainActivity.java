@@ -12,6 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.crashlytics.android.Crashlytics;
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.CustomEvent;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.parse.ParseAnalytics;
@@ -86,10 +88,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void openAbout() {
+        Answers.getInstance().logCustom(new CustomEvent("Open About"));
         startActivity(new Intent(this, AboutActivity.class));
     }
 
     private void openInquiry() {
+        Answers.getInstance().logCustom(new CustomEvent("Open Inquiry"));
+
         try {
             Intent intent = new Intent(Intent.ACTION_SENDTO);
             intent.setData(Uri.parse("mailto:cutmailapp@gmail.com"));
@@ -102,6 +107,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void openPlayStore() {
+        Answers.getInstance().logCustom(new CustomEvent("Open PlayStore"));
+
         try {
             Uri uri = Uri.parse("market://details?id=me.cutmail.disasterapp");
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);

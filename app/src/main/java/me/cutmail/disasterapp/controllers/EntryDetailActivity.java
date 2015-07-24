@@ -13,6 +13,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
+import com.crashlytics.android.answers.Answers;
+import com.crashlytics.android.answers.ContentViewEvent;
 import com.uphyca.galette.SendScreenView;
 
 import butterknife.ButterKnife;
@@ -24,6 +26,7 @@ public class EntryDetailActivity extends AppCompatActivity {
     private static final String EXTRA_TITLE = "title";
     private static final String EXTRA_URL = "url";
 
+    private String title;
     private String url;
 
     @InjectView(R.id.web)
@@ -57,12 +60,23 @@ public class EntryDetailActivity extends AppCompatActivity {
             actionBar.setTitle(intent.getStringExtra(EXTRA_TITLE));
         }
 
+        title = intent.getStringExtra(EXTRA_TITLE);
         url = intent.getStringExtra(EXTRA_URL);
+
+        trackContentViewEventWithAnswers();
+
         if (TextUtils.isEmpty(url)) {
             finish();
         } else {
             webView.loadUrl(url);
         }
+    }
+
+    private void trackContentViewEventWithAnswers() {
+        Answers.getInstance().logContentView(new ContentViewEvent()
+            .putContentName(title)
+            .putCustomAttribute("url", url)
+        );
     }
 
     @SuppressLint("SetJavaScriptEnabled")
