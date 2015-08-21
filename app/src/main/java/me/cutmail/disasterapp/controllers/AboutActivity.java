@@ -10,13 +10,13 @@ import android.widget.TextView;
 import com.crashlytics.android.Crashlytics;
 import com.uphyca.galette.SendScreenView;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import me.cutmail.disasterapp.R;
 
 public class AboutActivity extends AppCompatActivity {
 
-    @InjectView(R.id.version)
+    @Bind(R.id.version)
     TextView versionView;
 
     @Override
@@ -24,7 +24,7 @@ public class AboutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         setupActionBar();
         setupLayout();
