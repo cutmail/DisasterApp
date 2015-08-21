@@ -21,8 +21,8 @@ import com.parse.ParseQueryAdapter;
 import com.uphyca.galette.SendEvent;
 import com.uphyca.galette.SendScreenView;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import io.fabric.sdk.android.Fabric;
 import me.cutmail.disasterapp.R;
 import me.cutmail.disasterapp.model.Entry;
@@ -30,10 +30,10 @@ import me.cutmail.disasterapp.model.Entry;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-    @InjectView(R.id.list)
+    @Bind(R.id.list)
     ListView listView;
 
-    @InjectView(R.id.adView)
+    @Bind(R.id.adView)
     AdView adView;
 
     private ParseQueryAdapter<Entry> adapter;
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         setupLayout();
 
         Fabric.with(this, new Crashlytics());

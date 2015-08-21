@@ -1,7 +1,6 @@
 package me.cutmail.disasterapp.controllers;
 
 import android.annotation.SuppressLint;
-
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -17,8 +16,8 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
 import com.uphyca.galette.SendScreenView;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import me.cutmail.disasterapp.R;
 
 public class EntryDetailActivity extends AppCompatActivity {
@@ -29,7 +28,7 @@ public class EntryDetailActivity extends AppCompatActivity {
     private String title;
     private String url;
 
-    @InjectView(R.id.web)
+    @Bind(R.id.web)
     WebView webView;
 
     public static Intent createIntent(Context context, String title, String url) {
@@ -44,7 +43,7 @@ public class EntryDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry_detail);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         setupWebView();
 
