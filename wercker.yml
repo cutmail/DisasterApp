@@ -16,7 +16,7 @@ build:
     - script:
         name: run gradle connectedAndroidTest
         code: |
-          gradlew --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR connectedAndroidTest
+          gradle --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR connectedAndroidTest
     #  after-steps:
     # Use the build results
     #    - script:
