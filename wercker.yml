@@ -17,11 +17,10 @@ build:
         name: run gradle connectedAndroidTest
         code: |
           gradle --full-stacktrace -q --project-cache-dir=$WERCKER_CACHE_DIR connectedAndroidTest
-    #  after-steps:
-    # Use the build results
-    #    - script:
-    #        name: inspect build result
-    #        code: |
-    #          pwd
-    #          ls -la ./app/build/outputs/
-    #          cp -r ./app/build/outputs/* ${WERCKER_REPORT_ARTIFACTS_DIR}
+  after-steps:
+    - script:
+        name: inspect build result
+        code: |
+          pwd
+          ls -la ./app/build/outputs/
+          cp -r ./app/build/outputs/* ${WERCKER_REPORT_ARTIFACTS_DIR}
