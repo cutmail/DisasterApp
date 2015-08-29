@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="me.cutmail.disasterapp.controllers.AboutActivity">
+    tools:context="me.cutmail.disasterapp.activity.AboutActivity">
     <item
         android:id="@+id/action_settings"
         android:title="@string/action_settings"

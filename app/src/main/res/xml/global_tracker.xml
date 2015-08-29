@@ -6,13 +6,13 @@
     <bool name="ga_autoActivityTracking">true</bool>
 
     <!-- The screen names that will appear in reports -->
-    <screenName name="me.cutmail.disasterapp.controllers.MainActivity">
+    <screenName name="me.cutmail.disasterapp.activity.MainActivity">
         DisasterApp EntryListView
     </screenName>
-    <screenName name="me.cutmail.disasterapp.controllers.EntryDetailActivity">
+    <screenName name="me.cutmail.disasterapp.activity.EntryDetailActivity">
         DisasterApp EntryDetailView
     </screenName>
-    <screenName name="me.cutmail.disasterapp.controllers.AboutActivity">
+    <screenName name="me.cutmail.disasterapp.activity.AboutActivity">
         DisasterApp AboutView
     </screenName>
 

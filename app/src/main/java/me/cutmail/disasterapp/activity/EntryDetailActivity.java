@@ -1,4 +1,4 @@
-package me.cutmail.disasterapp.controllers;
+package me.cutmail.disasterapp.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
