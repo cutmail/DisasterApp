@@ -23,6 +23,7 @@ import com.uphyca.galette.SendScreenView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import hotchemi.android.rate.AppRate;
 import io.fabric.sdk.android.Fabric;
 import me.cutmail.disasterapp.R;
 import me.cutmail.disasterapp.model.Entry;
@@ -49,11 +50,18 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Fabric.with(this, new Crashlytics());
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
         setupAdView();
+        setupRateDialog();
+
+        AppRate.showRateDialogIfMeetsConditions(this);
     }
 
     private void setupAdView() {
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
+    }
+
+    private void setupRateDialog() {
+        AppRate.with(this).monitor();
     }
 
     @Override
