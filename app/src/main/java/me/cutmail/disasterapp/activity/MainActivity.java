@@ -27,6 +27,7 @@ import hotchemi.android.rate.AppRate;
 import io.fabric.sdk.android.Fabric;
 import me.cutmail.disasterapp.R;
 import me.cutmail.disasterapp.model.Entry;
+import timber.log.Timber;
 
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
@@ -110,7 +111,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             intent.putExtra(Intent.EXTRA_TEXT, "こちらにお問い合わせ内容をご記入ください。");
             startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            Crashlytics.getInstance().core.logException(e);
+            Timber.e(e, e.getMessage());
         }
     }
 
@@ -122,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            Crashlytics.getInstance().core.logException(e);
+            Timber.e(e, e.getMessage());
         }
     }
 

@@ -7,12 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
 import com.uphyca.galette.SendScreenView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import me.cutmail.disasterapp.R;
+import timber.log.Timber;
 
 public class AboutActivity extends AppCompatActivity {
 
@@ -60,7 +60,7 @@ public class AboutActivity extends AppCompatActivity {
             version = getApplicationContext().getPackageManager().getPackageInfo(
                     getApplicationContext().getPackageName(), 1).versionName;
         } catch (PackageManager.NameNotFoundException e) {
-            Crashlytics.getInstance().core.logException(e);
+            Timber.e(e, e.getMessage());
             version = "";
         }
 
