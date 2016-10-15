@@ -10,16 +10,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
+import com.firebase.ui.database.FirebaseListAdapter;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import hotchemi.android.rate.AppRate;
 import io.fabric.sdk.android.Fabric;
 import me.cutmail.disasterapp.R;
+import me.cutmail.disasterapp.model.Entry;
 import timber.log.Timber;
 
 
@@ -27,6 +32,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @BindView(R.id.listView)
     ListView listView;
+
+    private FirebaseListAdapter<Entry> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +46,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setupRateDialog();
 
         AppRate.showRateDialogIfMeetsConditions(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        adapter.cleanup();
     }
 
     private void setupRateDialog() {
@@ -69,6 +82,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void setupLayout() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("entries");
+        adapter = new FirebaseListAdapter<Entry>(this, Entry.class, android.R.layout.simple_list_item_1, ref) {
+            @Override
+            protected void populateView(View v, Entry entry, int position) {
+                ((TextView) v.findViewById(android.R.id.text1)).setText(entry.getTitle());
+            }
+        };
+        listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
     }
 
@@ -105,7 +126,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        Intent intent = EntryDetailActivity.createIntent(this, entry.getTitle(), entry.getUrl());
-//        startActivity(intent);
+        Entry entry = adapter.getItem(position);
+        Intent intent = EntryDetailActivity.createIntent(this, entry.getTitle(), entry.getUrl());
+        startActivity(intent);
     }
 }

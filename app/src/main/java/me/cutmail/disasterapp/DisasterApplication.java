@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.firebase.database.FirebaseDatabase;
 
 import timber.log.Timber;
 
@@ -13,6 +14,7 @@ public class DisasterApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         setupTimber();
     }
 
