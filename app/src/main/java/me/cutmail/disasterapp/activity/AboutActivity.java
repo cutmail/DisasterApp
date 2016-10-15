@@ -7,20 +7,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import com.uphyca.galette.SendScreenView;
-
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.cutmail.disasterapp.R;
 import timber.log.Timber;
 
 public class AboutActivity extends AppCompatActivity {
 
-    @Bind(R.id.version)
+    @BindView(R.id.version)
     TextView versionView;
 
     @Override
-    @SendScreenView(screenName = "about")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);

@@ -14,14 +14,10 @@ import android.widget.ListView;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.parse.ParseAnalytics;
 import com.parse.ParseQueryAdapter;
-import com.uphyca.galette.SendEvent;
-import com.uphyca.galette.SendScreenView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import hotchemi.android.rate.AppRate;
 import io.fabric.sdk.android.Fabric;
@@ -32,16 +28,12 @@ import timber.log.Timber;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
-    @Bind(R.id.list)
+    @BindView(R.id.listView)
     ListView listView;
-
-    @Bind(R.id.adView)
-    AdView adView;
 
     private ParseQueryAdapter<Entry> adapter;
 
     @Override
-    @SendScreenView(screenName = "main")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -50,15 +42,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         Fabric.with(this, new Crashlytics());
         ParseAnalytics.trackAppOpenedInBackground(getIntent());
-        setupAdView();
         setupRateDialog();
 
         AppRate.showRateDialogIfMeetsConditions(this);
-    }
-
-    private void setupAdView() {
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
     }
 
     private void setupRateDialog() {
@@ -128,7 +114,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     @Override
-    @SendEvent(category = "entry", action = "click")
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Entry entry = adapter.getItem(position);
         Intent intent = EntryDetailActivity.createIntent(this, entry.getTitle(), entry.getUrl());

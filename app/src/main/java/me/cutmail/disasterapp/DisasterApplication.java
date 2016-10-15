@@ -4,45 +4,25 @@ import android.app.Application;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.analytics.GoogleAnalytics;
-import com.google.android.gms.analytics.Tracker;
 import com.parse.Parse;
 import com.parse.ParseAnonymousUtils;
-import com.parse.ParseCrashReporting;
 import com.parse.ParseInstallation;
 import com.parse.ParseObject;
-import com.uphyca.galette.TrackerProvider;
 
 import me.cutmail.disasterapp.model.Entry;
 import timber.log.Timber;
 
-public class DisasterApplication extends Application implements TrackerProvider {
-
-    private static final String PROPERTY_ID = "UA-3314949-13";
-
-    private Tracker tracker;
+public class DisasterApplication extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        setupGoogleAnalytics();
         setupParse();
         setupTimber();
     }
 
-    @Override
-    public Tracker getByName(String trackerName) {
-        return tracker;
-    }
-
-    private void setupGoogleAnalytics() {
-        GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-        tracker = analytics.newTracker(PROPERTY_ID);
-    }
-
     private void setupParse() {
-        ParseCrashReporting.enable(this);
         Parse.enableLocalDatastore(this);
         ParseObject.registerSubclass(Entry.class);
         Parse.initialize(this, "QL3YO70ii8CHNVyUz591gUCgfimdVqbnLmzO2SFm", "IJ5aSNUzuAcRkmwiI7IsEkH2623rJVtbZQx6azKV");

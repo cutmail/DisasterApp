@@ -14,9 +14,8 @@ import android.webkit.WebView;
 
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.ContentViewEvent;
-import com.uphyca.galette.SendScreenView;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.cutmail.disasterapp.R;
 
@@ -28,7 +27,7 @@ public class EntryDetailActivity extends AppCompatActivity {
     private String title;
     private String url;
 
-    @Bind(R.id.web)
+    @BindView(R.id.web)
     WebView webView;
 
     public static Intent createIntent(Context context, String title, String url) {
@@ -39,7 +38,6 @@ public class EntryDetailActivity extends AppCompatActivity {
     }
 
     @Override
-    @SendScreenView(screenName = "entry_detail")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entry_detail);

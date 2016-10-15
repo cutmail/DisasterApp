@@ -6,12 +6,10 @@ buildscript {
 
     dependencies {
         classpath 'io.fabric.tools:gradle:1.19.1'
-        classpath 'com.uphyca.galette:galette-plugin:0.9.12'
     }
 }
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-apply plugin: 'galette'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
@@ -38,7 +36,6 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -46,17 +43,14 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.google.android.gms:play-services:9.6.1'
     compile 'com.android.support:appcompat-v7:24.2.1'
-    compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'com.jakewharton:butterknife:8.4.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
     compile 'com.jakewharton.timber:timber:3.1.0'
-    compile('com.crashlytics.sdk.android:crashlytics:2.5.5@aar') {
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
         transitive = true;
     }
     compile 'com.parse.bolts:bolts-android:1.2.0'
     compile 'com.github.hotchemi:android-rate:0.5.3'
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
-    compile fileTree(dir: 'libs', include: 'ParseCrashReporting-*.jar')
-    compile fileTree(dir: 'libs', include: 'nendSDK-*.jar')
-    compile fileTree(dir: 'libs', include: 'nendAdapter-*.jar')
 }
