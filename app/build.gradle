@@ -42,7 +42,6 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:24.2.1'
     compile 'com.jakewharton:butterknife:8.4.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
@@ -50,7 +49,5 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.6.5@aar') {
         transitive = true;
     }
-    compile 'com.parse.bolts:bolts-android:1.2.0'
     compile 'com.github.hotchemi:android-rate:1.0.1'
-    compile fileTree(dir: 'libs', include: 'Parse-*.jar')
 }

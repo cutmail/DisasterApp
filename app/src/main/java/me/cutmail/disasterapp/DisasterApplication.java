@@ -4,12 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
-import com.parse.Parse;
-import com.parse.ParseAnonymousUtils;
-import com.parse.ParseInstallation;
-import com.parse.ParseObject;
 
-import me.cutmail.disasterapp.model.Entry;
 import timber.log.Timber;
 
 public class DisasterApplication extends Application {
@@ -18,17 +13,7 @@ public class DisasterApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        setupParse();
         setupTimber();
-    }
-
-    private void setupParse() {
-        Parse.enableLocalDatastore(this);
-        ParseObject.registerSubclass(Entry.class);
-        Parse.initialize(this, "QL3YO70ii8CHNVyUz591gUCgfimdVqbnLmzO2SFm", "IJ5aSNUzuAcRkmwiI7IsEkH2623rJVtbZQx6azKV");
-
-        ParseInstallation.getCurrentInstallation().saveInBackground();
-        ParseAnonymousUtils.logInInBackground();
     }
 
     private void setupTimber() {

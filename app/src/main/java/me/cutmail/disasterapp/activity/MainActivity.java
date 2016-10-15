@@ -14,15 +14,12 @@ import android.widget.ListView;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
-import com.parse.ParseAnalytics;
-import com.parse.ParseQueryAdapter;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import hotchemi.android.rate.AppRate;
 import io.fabric.sdk.android.Fabric;
 import me.cutmail.disasterapp.R;
-import me.cutmail.disasterapp.model.Entry;
 import timber.log.Timber;
 
 
@@ -30,8 +27,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @BindView(R.id.listView)
     ListView listView;
-
-    private ParseQueryAdapter<Entry> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +36,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setupLayout();
 
         Fabric.with(this, new Crashlytics());
-        ParseAnalytics.trackAppOpenedInBackground(getIntent());
         setupRateDialog();
 
         AppRate.showRateDialogIfMeetsConditions(this);
@@ -75,10 +69,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void setupLayout() {
-        adapter = new ParseQueryAdapter<>(this, Entry.class, android.R.layout.simple_list_item_1);
-        adapter.setTextKey("title");
-
-        listView.setAdapter(adapter);
         listView.setOnItemClickListener(this);
     }
 
@@ -115,8 +105,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Entry entry = adapter.getItem(position);
-        Intent intent = EntryDetailActivity.createIntent(this, entry.getTitle(), entry.getUrl());
-        startActivity(intent);
+//        Intent intent = EntryDetailActivity.createIntent(this, entry.getTitle(), entry.getUrl());
+//        startActivity(intent);
     }
 }

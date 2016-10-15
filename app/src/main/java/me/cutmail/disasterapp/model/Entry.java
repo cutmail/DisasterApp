@@ -1,16 +1,15 @@
 package me.cutmail.disasterapp.model;
 
-import com.parse.ParseClassName;
-import com.parse.ParseObject;
+public class Entry {
 
-@ParseClassName("Entry")
-public class Entry extends ParseObject {
+    private String title;
+    private String url;
 
     public String getTitle() {
-        return getString("title");
+        return title;
     }
 
     public String getUrl() {
-        return getString("url");
+        return url;
     }
 }
