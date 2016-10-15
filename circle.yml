@@ -1,0 +1,27 @@
+general:
+    artifacts:
+        - ./app/build/outputs/apk/
+        - ./app/build/outputs/reports/androidTests/connected/
+
+machine:
+    timezone:
+        Asia/Tokyo
+    java:
+        version: openjdk8
+    environment:
+        LC_CTYPE: en_US.UTF-8
+        LC_ALL: en_US.UTF-8
+        JAVA_OPTS: "-Xmx2048m -XX:MaxPermSize=1024m"
+
+dependencies:
+  pre:
+    - echo y | android update sdk --no-ui --all --filter "tools,platform-tools,android-24,extra-android-support,extra-android-m2repository,extra-google-m2repository,extra-google-google_play_services"
+    - echo y | android update sdk --no-ui --all --filter "build-tools-24.0.3"
+  cache_directories:
+    - ~/.android
+  override:
+    - ./gradlew dependencies
+
+test:
+  override:
+    - ./gradlew assembleRelease
