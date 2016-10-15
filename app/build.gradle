@@ -51,6 +51,6 @@ dependencies {
         transitive = true;
     }
     compile 'com.parse.bolts:bolts-android:1.2.0'
-    compile 'com.github.hotchemi:android-rate:0.5.3'
+    compile 'com.github.hotchemi:android-rate:1.0.1'
     compile fileTree(dir: 'libs', include: 'Parse-*.jar')
 }
