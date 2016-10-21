@@ -28,7 +28,7 @@ android {
         applicationId "me.cutmail.disasterapp"
         minSdkVersion 14
         targetSdkVersion 24
-        versionCode 14
+        versionCode 15
         versionName "1.6.0"
         jackOptions {
             enabled true
