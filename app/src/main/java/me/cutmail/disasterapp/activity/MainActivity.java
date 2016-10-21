@@ -51,7 +51,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        adapter.cleanup();
+
+        if (adapter != null) {
+            adapter.cleanup();
+        }
     }
 
     private void setupRateDialog() {
@@ -126,8 +129,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Entry entry = adapter.getItem(position);
-        Intent intent = EntryDetailActivity.createIntent(this, entry.getTitle(), entry.getUrl());
-        startActivity(intent);
+        if (adapter != null) {
+            Entry entry = adapter.getItem(position);
+            Intent intent = EntryDetailActivity.createIntent(this, entry.getTitle(), entry.getUrl());
+            startActivity(intent);
+        }
     }
 }
