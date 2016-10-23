@@ -13,6 +13,10 @@ machine:
         LC_ALL: en_US.UTF-8
         JAVA_OPTS: "-Xmx2048m -XX:MaxPermSize=1024m"
 
+checkout:
+  post:
+    - cp .circle/google-services.json app/google-services.json
+
 dependencies:
   pre:
     - echo y | android update sdk --no-ui --all --filter "tools,platform-tools,android-25,extra-android-support,extra-android-m2repository,extra-google-m2repository,extra-google-google_play_services"
