@@ -16,6 +16,7 @@ machine:
 checkout:
   post:
     - cp .circle/google-services.json app/google-services.json
+    - .circle/setup-fabric-properties.sh
 
 dependencies:
   pre:

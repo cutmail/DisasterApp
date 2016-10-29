@@ -27,10 +27,6 @@
             </intent-filter>
         </activity>
 
-        <meta-data
-            android:name="com.crashlytics.ApiKey"
-            android:value="7d0f3ef6938723ac69b416c2f9d0cfa7f9ae7437" />
-
         <activity
             android:name=".activity.EntryDetailActivity"
             android:label="@string/title_activity_entry_detail" />
