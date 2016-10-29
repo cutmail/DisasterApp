@@ -36,6 +36,7 @@ local.properties
 res/values/com_crashlytics_export_strings.xml
 app/src/main/res/values/com_crashlytics_export_strings.xml
 app/src/main/assets/crashlytics-build.properties
+app/fabric.properties
 build/
 
 # Google
