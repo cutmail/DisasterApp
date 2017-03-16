@@ -4,6 +4,7 @@ import android.app.Application;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.database.FirebaseDatabase;
 
 import timber.log.Timber;
@@ -38,6 +39,7 @@ public class DisasterApplication extends Application {
 
             if (t != null) {
                 Crashlytics.getInstance().core.logException(t);
+                FirebaseCrash.report(t);
             }
         }
     }
