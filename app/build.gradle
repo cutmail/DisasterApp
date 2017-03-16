@@ -19,20 +19,12 @@ android {
     compileSdkVersion 25
     buildToolsVersion "25.0.0"
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
-
     defaultConfig {
         applicationId "me.cutmail.disasterapp"
         minSdkVersion 14
         targetSdkVersion 25
         versionCode 16
         versionName "1.6.1"
-        jackOptions {
-            enabled true
-        }
     }
     buildTypes {
         release {
