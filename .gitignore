@@ -15,6 +15,7 @@ out/
 
 local.properties
 .envrc
+releasekey.keystore
 
 # Eclipse project files
 .classpath
