@@ -35,8 +35,8 @@ android {
 }
 
 dependencies {
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') {
-        transitive = true;
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true
     }
     compile 'com.android.support:appcompat-v7:25.0.1'
     compile 'com.jakewharton.timber:timber:4.5.1'
