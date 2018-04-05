@@ -16,8 +16,9 @@ import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.firebase.ui.database.FirebaseListAdapter;
-import com.google.firebase.database.DatabaseReference;
+import com.firebase.ui.database.FirebaseListOptions;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,12 +50,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    protected void onStart() {
+        super.onStart();
+        adapter.startListening();
+    }
 
-        if (adapter != null) {
-            adapter.cleanup();
-        }
+    @Override
+    protected void onStop() {
+        super.onStop();
+        adapter.stopListening();
     }
 
     private void setupRateDialog() {
@@ -85,10 +89,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void setupLayout() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("entries");
-        adapter = new FirebaseListAdapter<Entry>(this, Entry.class, android.R.layout.simple_list_item_1, ref) {
-            @Override
-            protected void populateView(View v, Entry entry, int position) {
+        Query query = FirebaseDatabase.getInstance()
+                .getReference("entries");
+
+        FirebaseListOptions<Entry> options = new FirebaseListOptions.Builder<Entry>()
+                .setQuery(query, Entry.class)
+                .setLayout(android.R.layout.simple_list_item_1)
+                .build();
+
+        adapter = new FirebaseListAdapter<Entry>(options) {
+            @Override protected void populateView(View v, Entry entry, int position) {
                 ((TextView) v.findViewById(android.R.id.text1)).setText(entry.getTitle());
             }
         };

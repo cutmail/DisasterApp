@@ -41,7 +41,7 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:27.1.0'
     implementation 'com.jakewharton.timber:timber:4.7.0'
     implementation 'com.github.hotchemi:android-rate:1.0.1'
-    implementation 'com.firebaseui:firebase-ui-database:1.2.0'
+    implementation 'com.firebaseui:firebase-ui-database:3.3.0'
     implementation 'com.google.firebase:firebase-database:12.0.1'
     implementation 'com.google.firebase:firebase-core:12.0.1'
     implementation 'com.google.firebase:firebase-crash:12.0.1'
