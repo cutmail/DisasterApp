@@ -39,12 +39,12 @@ dependencies {
         transitive = true
     }
     implementation 'com.android.support:appcompat-v7:25.0.1'
-    implementation 'com.jakewharton.timber:timber:4.5.1'
+    implementation 'com.jakewharton.timber:timber:4.7.0'
     implementation 'com.github.hotchemi:android-rate:1.0.1'
     implementation 'com.firebaseui:firebase-ui-database:1.2.0'
-    implementation 'com.google.firebase:firebase-database:11.0.1'
-    implementation 'com.google.firebase:firebase-core:11.0.1'
-    implementation 'com.google.firebase:firebase-crash:11.0.1'
+    implementation 'com.google.firebase:firebase-database:12.0.1'
+    implementation 'com.google.firebase:firebase-core:12.0.1'
+    implementation 'com.google.firebase:firebase-crash:12.0.1'
     implementation 'com.jakewharton:butterknife:8.6.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.6.0'
 }
