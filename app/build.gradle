@@ -39,7 +39,7 @@ dependencies {
         transitive = true
     }
     implementation 'com.android.support:appcompat-v7:27.1.1'
-    implementation 'com.jakewharton.timber:timber:4.7.0'
+    implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'com.github.hotchemi:android-rate:1.0.1'
     implementation 'com.firebaseui:firebase-ui-database:3.3.0'
     implementation 'com.google.firebase:firebase-database:16.0.1'
