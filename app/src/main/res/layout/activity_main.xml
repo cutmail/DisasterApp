@@ -11,7 +11,7 @@
         style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-6dp"
+        android:layout_marginTop="-8dp"
         android:background="@android:color/transparent"
         android:indeterminate="true"
         tools:ignore="NegativeMargin" />
@@ -21,10 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/paging_loading"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:paddingTop="8dp"
         android:clipToPadding="false"
-        tools:listitem="@android:layout/simple_list_item_1" />
+        tools:listitem="@layout/entry_list_item" />
 
 </RelativeLayout>

@@ -23,6 +23,7 @@ import com.google.firebase.firestore.Query;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.paging.PagedList;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -107,27 +108,24 @@ public class MainActivity extends AppCompatActivity {
 
             @NonNull @Override public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext())
-                        .inflate(android.R.layout.simple_list_item_1, parent, false);
-                return new ItemViewHolder(view);
+                        .inflate(R.layout.entry_list_item, parent, false);
+                return new ItemViewHolder(view, new ItemViewHolder.OnEntryClickListener() {
+                    @Override public void onItemClick(Entry entry) {
+                        openEntry(entry);
+                    }
+                });
             }
         };
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adapter);
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(this).getOrientation());
+        recyclerView.addItemDecoration(itemDecoration);
+    }
 
-//
-//        FirebaseListOptions<Entry> options = new FirebaseListOptions.Builder<Entry>()
-//                .setQuery(query, Entry.class)
-//                .setLayout(android.R.layout.simple_list_item_1)
-//                .build();
-//
-//        adapter = new FirebaseListAdapter<Entry>(options) {
-//            @Override protected void populateView(View v, Entry entry, int position) {
-//                ((TextView) v.findViewById(android.R.id.text1)).setText(entry.getTitle());
-//            }
-//        };
-//        listView.setAdapter(adapter);
-//        listView.setOnItemClickListener(this);
+    public void openEntry(Entry entry) {
+        Intent intent = EntryDetailActivity.createIntent(this, entry.getTitle(), entry.getUrl());
+        startActivity(intent);
     }
 
     private void openAbout() {
@@ -161,27 +159,33 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-//    @Override
-//    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//        if (adapter != null) {
-//            Entry entry = adapter.getItem(position);
-//            Intent intent = EntryDetailActivity.createIntent(this, entry.getTitle(), entry.getUrl());
-//            startActivity(intent);
-//        }
-//    }
+    static class ItemViewHolder extends RecyclerView.ViewHolder {
 
-    public static class ItemViewHolder extends RecyclerView.ViewHolder {
+        public interface OnEntryClickListener {
+            void onItemClick(Entry entry);
+        }
 
-        @BindView(android.R.id.text1)
+        @BindView(R.id.container)
+        View mView;
+
+        @BindView(R.id.title)
         TextView mTextView;
 
-        ItemViewHolder(View itemView) {
+        private final OnEntryClickListener listener;
+
+        ItemViewHolder(View itemView, OnEntryClickListener listener) {
             super(itemView);
+            this.listener = listener;
             ButterKnife.bind(this, itemView);
         }
 
-        void bind(Entry entry) {
+        void bind(final Entry entry) {
             mTextView.setText(entry.getTitle());
+            mView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onItemClick(entry);
+                }
+            });
         }
     }
 }
