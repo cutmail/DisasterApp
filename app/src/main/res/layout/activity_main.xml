@@ -1,4 +1,30 @@
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/listView"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" />
+    android:layout_height="match_parent"
+    tools:context="me.cutmail.disasterapp.activity.MainActivity">
+
+    <ProgressBar
+        android:id="@+id/paging_loading"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-6dp"
+        android:background="@android:color/transparent"
+        android:indeterminate="true"
+        tools:ignore="NegativeMargin" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/paging_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/paging_loading"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="8dp"
+        android:clipToPadding="false"
+        tools:listitem="@android:layout/simple_list_item_1" />
+
+</RelativeLayout>
