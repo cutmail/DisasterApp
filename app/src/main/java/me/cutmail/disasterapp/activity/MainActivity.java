@@ -110,8 +110,8 @@ public class MainActivity extends AppCompatActivity {
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.entry_list_item, parent, false);
                 return new ItemViewHolder(view, new ItemViewHolder.OnEntryClickListener() {
-                    @Override public void onItemClick(Entry entry) {
-                        openEntry(entry);
+                    @Override public void onItemClick(String title, String url) {
+                        openEntry(title, url);
                     }
                 });
             }
@@ -123,8 +123,8 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.addItemDecoration(itemDecoration);
     }
 
-    public void openEntry(Entry entry) {
-        Intent intent = EntryDetailActivity.createIntent(this, entry.getTitle(), entry.getUrl());
+    public void openEntry(String title, String url) {
+        Intent intent = EntryDetailActivity.createIntent(this, title, url);
         startActivity(intent);
     }
 
@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
     static class ItemViewHolder extends RecyclerView.ViewHolder {
 
         public interface OnEntryClickListener {
-            void onItemClick(Entry entry);
+            void onItemClick(String title, String url);
         }
 
         @BindView(R.id.container)
@@ -183,7 +183,7 @@ public class MainActivity extends AppCompatActivity {
             mTextView.setText(entry.getTitle());
             mView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
-                    listener.onItemClick(entry);
+                    listener.onItemClick(entry.getTitle(), entry.getUrl());
                 }
             });
         }
