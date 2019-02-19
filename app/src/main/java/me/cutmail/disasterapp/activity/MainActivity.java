@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
@@ -16,6 +17,7 @@ import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
 import com.firebase.ui.firestore.paging.FirestorePagingAdapter;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
+import com.firebase.ui.firestore.paging.LoadingState;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -39,6 +41,9 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.paging_recycler)
     RecyclerView recyclerView;
+
+    @BindView(R.id.paging_loading)
+    ProgressBar progressBar;
 
     private FirebaseFirestore firestore;
     private CollectionReference collectionReference;
@@ -114,6 +119,23 @@ public class MainActivity extends AppCompatActivity {
                         openEntry(title, url);
                     }
                 });
+            }
+
+            @Override protected void onLoadingStateChanged(@NonNull LoadingState state) {
+                switch (state) {
+                    case LOADING_INITIAL:
+                    case LOADING_MORE:
+                        progressBar.setVisibility(View.VISIBLE);
+                        break;
+                    case LOADED:
+                        progressBar.setVisibility(View.GONE);
+                        break;
+                    case FINISHED:
+                        progressBar.setVisibility(View.GONE);
+                        break;
+                    case ERROR:
+                        break;
+                }
             }
         };
 
