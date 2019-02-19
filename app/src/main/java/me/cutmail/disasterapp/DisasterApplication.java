@@ -1,13 +1,13 @@
 package me.cutmail.disasterapp;
 
 import android.app.Application;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.database.FirebaseDatabase;
 
+import androidx.annotation.NonNull;
 import timber.log.Timber;
 
 public class DisasterApplication extends Application {
