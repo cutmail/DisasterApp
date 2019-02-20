@@ -4,9 +4,9 @@ import android.app.Application;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
-import com.google.firebase.crash.FirebaseCrash;
 import com.google.firebase.database.FirebaseDatabase;
 
+import androidx.annotation.NonNull;
 import timber.log.Timber;
 
 public class DisasterApplication extends Application {
@@ -30,7 +30,7 @@ public class DisasterApplication extends Application {
     private static class CrashReportingTree extends Timber.Tree {
 
         @Override
-        protected void log(int priority, String tag, String message, Throwable t) {
+        protected void log(int priority, String tag, @NonNull String message, Throwable t) {
             if (priority == Log.VERBOSE || priority == Log.DEBUG) {
                 return;
             }
@@ -39,7 +39,7 @@ public class DisasterApplication extends Application {
 
             if (t != null) {
                 Crashlytics.getInstance().core.logException(t);
-                FirebaseCrash.report(t);
+                Crashlytics.logException(t);
             }
         }
     }

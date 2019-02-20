@@ -4,21 +4,30 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
+import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.answers.Answers;
 import com.crashlytics.android.answers.CustomEvent;
-import com.firebase.ui.database.FirebaseListAdapter;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.firebase.ui.firestore.paging.FirestorePagingAdapter;
+import com.firebase.ui.firestore.paging.FirestorePagingOptions;
+import com.firebase.ui.firestore.paging.LoadingState;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.paging.PagedList;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import hotchemi.android.rate.AppRate;
@@ -28,33 +37,32 @@ import me.cutmail.disasterapp.model.Entry;
 import timber.log.Timber;
 
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.listView)
-    ListView listView;
+    @BindView(R.id.paging_recycler)
+    RecyclerView recyclerView;
 
-    private FirebaseListAdapter<Entry> adapter;
+    @BindView(R.id.paging_loading)
+    ProgressBar progressBar;
+
+    private FirebaseFirestore firestore;
+    private CollectionReference collectionReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        firestore = FirebaseFirestore.getInstance();
+        collectionReference = firestore.collection("entries");
+
         setupLayout();
 
         Fabric.with(this, new Crashlytics());
         setupRateDialog();
 
         AppRate.showRateDialogIfMeetsConditions(this);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        if (adapter != null) {
-            adapter.cleanup();
-        }
     }
 
     private void setupRateDialog() {
@@ -85,15 +93,61 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     private void setupLayout() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("entries");
-        adapter = new FirebaseListAdapter<Entry>(this, Entry.class, android.R.layout.simple_list_item_1, ref) {
-            @Override
-            protected void populateView(View v, Entry entry, int position) {
-                ((TextView) v.findViewById(android.R.id.text1)).setText(entry.getTitle());
+        Query query = collectionReference.orderBy("title");
+
+        PagedList.Config config = new PagedList.Config.Builder()
+                .setEnablePlaceholders(false)
+                .setPrefetchDistance(10)
+                .setPageSize(20)
+                .build();
+
+        FirestorePagingOptions<Entry> options = new FirestorePagingOptions.Builder<Entry>()
+                .setLifecycleOwner(this)
+                .setQuery(query, config, Entry.class)
+                .build();
+
+        FirestorePagingAdapter<Entry, ItemViewHolder> adapter = new FirestorePagingAdapter<Entry, ItemViewHolder>(options) {
+            @Override protected void onBindViewHolder(@NonNull ItemViewHolder holder, int position, @NonNull Entry entry) {
+                holder.bind(entry);
+            }
+
+            @NonNull @Override public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.entry_list_item, parent, false);
+                return new ItemViewHolder(view, new ItemViewHolder.OnEntryClickListener() {
+                    @Override public void onItemClick(String title, String url) {
+                        openEntry(title, url);
+                    }
+                });
+            }
+
+            @Override protected void onLoadingStateChanged(@NonNull LoadingState state) {
+                switch (state) {
+                    case LOADING_INITIAL:
+                    case LOADING_MORE:
+                        progressBar.setVisibility(View.VISIBLE);
+                        break;
+                    case LOADED:
+                        progressBar.setVisibility(View.GONE);
+                        break;
+                    case FINISHED:
+                        progressBar.setVisibility(View.GONE);
+                        break;
+                    case ERROR:
+                        break;
+                }
             }
         };
-        listView.setAdapter(adapter);
-        listView.setOnItemClickListener(this);
+
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+        DividerItemDecoration itemDecoration = new DividerItemDecoration(recyclerView.getContext(), new LinearLayoutManager(this).getOrientation());
+        recyclerView.addItemDecoration(itemDecoration);
+    }
+
+    public void openEntry(String title, String url) {
+        Intent intent = EntryDetailActivity.createIntent(this, title, url);
+        startActivity(intent);
     }
 
     private void openAbout() {
@@ -111,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             intent.putExtra(Intent.EXTRA_TEXT, "こちらにお問い合わせ内容をご記入ください。");
             startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            Timber.e(e, e.getMessage());
+            Timber.e(e);
         }
     }
 
@@ -123,16 +177,37 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
         } catch (ActivityNotFoundException e) {
-            Timber.e(e, e.getMessage());
+            Timber.e(e);
         }
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        if (adapter != null) {
-            Entry entry = adapter.getItem(position);
-            Intent intent = EntryDetailActivity.createIntent(this, entry.getTitle(), entry.getUrl());
-            startActivity(intent);
+    static class ItemViewHolder extends RecyclerView.ViewHolder {
+
+        public interface OnEntryClickListener {
+            void onItemClick(String title, String url);
+        }
+
+        @BindView(R.id.container)
+        View mView;
+
+        @BindView(R.id.title)
+        TextView mTextView;
+
+        private final OnEntryClickListener listener;
+
+        ItemViewHolder(View itemView, OnEntryClickListener listener) {
+            super(itemView);
+            this.listener = listener;
+            ButterKnife.bind(this, itemView);
+        }
+
+        void bind(final Entry entry) {
+            mTextView.setText(entry.getTitle());
+            mView.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    listener.onItemClick(entry.getTitle(), entry.getUrl());
+                }
+            });
         }
     }
 }
