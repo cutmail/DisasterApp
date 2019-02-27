@@ -38,7 +38,6 @@ public class DisasterApplication extends Application {
             Crashlytics.getInstance().core.log(priority, tag, message);
 
             if (t != null) {
-                Crashlytics.getInstance().core.logException(t);
                 Crashlytics.logException(t);
             }
         }
