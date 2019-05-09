@@ -3,13 +3,36 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="10dp"
     tools:context="me.cutmail.disasterapp.activity.AboutActivity">
 
     <LinearLayout
+        android:id="@+id/license_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="60dp"
+        android:gravity="center_vertical"
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:background="?android:attr/selectableItemBackground">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="@string/license" />
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:padding="10dp"
+        android:orientation="vertical"
+        android:background="?android:attr/selectableItemBackground">
 
         <TextView
             android:layout_width="match_parent"
@@ -24,4 +47,10 @@
             tools:text="3.0" />
 
     </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/darker_gray" />
+
 </LinearLayout>
