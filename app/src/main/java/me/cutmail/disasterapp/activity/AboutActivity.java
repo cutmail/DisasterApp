@@ -1,14 +1,19 @@
 package me.cutmail.disasterapp.activity;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import me.cutmail.disasterapp.R;
 import timber.log.Timber;
 
@@ -55,12 +60,18 @@ public class AboutActivity extends AppCompatActivity {
         String version;
         try {
             version = getApplicationContext().getPackageManager().getPackageInfo(
-                    getApplicationContext().getPackageName(), 1).versionName;
+                    getApplicationContext().getPackageName(), PackageManager.GET_ACTIVITIES).versionName;
         } catch (PackageManager.NameNotFoundException e) {
             Timber.e(e, e.getMessage());
             version = "";
         }
 
         return version;
+    }
+
+    @OnClick(R.id.license_container)
+    void openLicense(View view) {
+        OssLicensesMenuActivity.setActivityTitle(getString(R.string.open_source_licenses));
+        startActivity(new Intent(this, OssLicensesMenuActivity.class));
     }
 }

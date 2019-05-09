@@ -10,6 +10,7 @@ buildscript {
 }
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'com.google.android.gms.oss-licenses-plugin'
 
 repositories {
     maven { url 'https://maven.fabric.io/public' }
@@ -17,6 +18,10 @@ repositories {
 }
 
 android {
+    compileOptions {
+        targetCompatibility = "8"
+        sourceCompatibility = "8"
+    }
     compileSdkVersion 28
     buildToolsVersion '28.0.3'
 
@@ -45,8 +50,9 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-firestore:4.3.1'
     implementation 'com.google.firebase:firebase-database:16.0.6'
     implementation 'com.google.firebase:firebase-core:16.0.7'
-    implementation 'com.jakewharton:butterknife:10.0.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
+    implementation 'com.jakewharton:butterknife:10.1.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
+    implementation 'com.google.android.gms:play-services-oss-licenses:16.0.2'
 }
 
 apply plugin: 'com.google.gms.google-services'

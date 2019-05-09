@@ -9,5 +9,6 @@
     <string name="title_activity_entry_detail">詳細</string>
     <string name="title_activity_about">地震・災害情報について</string>
     <string name="version">バージョン</string>
-
+    <string name="license">ライセンス</string>
+    <string name="open_source_licenses">オープンソースライセンス</string>
 </resources>
