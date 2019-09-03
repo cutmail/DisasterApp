@@ -45,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.paging_loading)
     ProgressBar progressBar;
 
-    private FirebaseFirestore firestore;
     private CollectionReference collectionReference;
 
     @Override
@@ -54,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        firestore = FirebaseFirestore.getInstance();
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         collectionReference = firestore.collection("entries");
 
         setupLayout();
@@ -114,11 +113,7 @@ public class MainActivity extends AppCompatActivity {
             @NonNull @Override public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.entry_list_item, parent, false);
-                return new ItemViewHolder(view, new ItemViewHolder.OnEntryClickListener() {
-                    @Override public void onItemClick(String title, String url) {
-                        openEntry(title, url);
-                    }
-                });
+                return new ItemViewHolder(view, (title, url) -> openEntry(title, url));
             }
 
             @Override protected void onLoadingStateChanged(@NonNull LoadingState state) {
@@ -128,8 +123,6 @@ public class MainActivity extends AppCompatActivity {
                         progressBar.setVisibility(View.VISIBLE);
                         break;
                     case LOADED:
-                        progressBar.setVisibility(View.GONE);
-                        break;
                     case FINISHED:
                         progressBar.setVisibility(View.GONE);
                         break;
@@ -203,11 +196,7 @@ public class MainActivity extends AppCompatActivity {
 
         void bind(final Entry entry) {
             mTextView.setText(entry.getTitle());
-            mView.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    listener.onItemClick(entry.getTitle(), entry.getUrl());
-                }
-            });
+            mView.setOnClickListener(v -> listener.onItemClick(entry.getTitle(), entry.getUrl()));
         }
     }
 }
