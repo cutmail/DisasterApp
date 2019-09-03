@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity;
@@ -35,10 +34,9 @@ public class AboutActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -62,7 +60,7 @@ public class AboutActivity extends AppCompatActivity {
             version = getApplicationContext().getPackageManager().getPackageInfo(
                     getApplicationContext().getPackageName(), PackageManager.GET_ACTIVITIES).versionName;
         } catch (PackageManager.NameNotFoundException e) {
-            Timber.e(e, e.getMessage());
+            Timber.e(e);
             version = "";
         }
 
@@ -70,7 +68,7 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     @OnClick(R.id.license_container)
-    void openLicense(View view) {
+    void openLicense() {
         OssLicensesMenuActivity.setActivityTitle(getString(R.string.open_source_licenses));
         startActivity(new Intent(this, OssLicensesMenuActivity.class));
     }
