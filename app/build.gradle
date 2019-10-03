@@ -48,7 +48,7 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'com.github.hotchemi:android-rate:1.0.1'
     implementation 'com.firebaseui:firebase-ui-firestore:4.3.2'
-    implementation 'com.google.firebase:firebase-database:19.0.0'
+    implementation 'com.google.firebase:firebase-database:19.1.0'
     implementation 'com.google.firebase:firebase-core:17.2.0'
     implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
