@@ -50,8 +50,8 @@ dependencies {
     implementation 'com.firebaseui:firebase-ui-firestore:4.3.2'
     implementation 'com.google.firebase:firebase-database:19.1.0'
     implementation 'com.google.firebase:firebase-core:17.2.0'
-    implementation 'com.jakewharton:butterknife:10.2.0'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.0'
+    implementation 'com.jakewharton:butterknife:10.2.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
     implementation 'com.google.android.gms:play-services-oss-licenses:17.0.0'
 }
 
