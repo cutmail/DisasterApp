@@ -27,8 +27,8 @@ android {
         applicationId "me.cutmail.disasterapp"
         minSdkVersion 26
         targetSdkVersion 30
-        versionCode 21
-        versionName "1.9.2"
+        versionCode 22
+        versionName "1.9.3"
     }
     buildTypes {
         release {
