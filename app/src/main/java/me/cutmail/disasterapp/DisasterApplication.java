@@ -3,7 +3,7 @@ package me.cutmail.disasterapp;
 import android.app.Application;
 import android.util.Log;
 
-import com.crashlytics.android.Crashlytics;
+import com.google.firebase.crashlytics.FirebaseCrashlytics;
 import com.google.firebase.database.FirebaseDatabase;
 
 import androidx.annotation.NonNull;
@@ -35,10 +35,10 @@ public class DisasterApplication extends Application {
                 return;
             }
 
-            Crashlytics.getInstance().core.log(priority, tag, message);
+            FirebaseCrashlytics.getInstance().log(message);
 
             if (t != null) {
-                Crashlytics.logException(t);
+                FirebaseCrashlytics.getInstance().recordException(t);
             }
         }
     }
