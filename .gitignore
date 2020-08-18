@@ -43,3 +43,7 @@ build/
 
 # Google
 app/google-services.json
+
+app/release
+
+fastlane/service-account.json

@@ -12,12 +12,10 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.crashlytics.android.Crashlytics;
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.CustomEvent;
 import com.firebase.ui.firestore.paging.FirestorePagingAdapter;
 import com.firebase.ui.firestore.paging.FirestorePagingOptions;
 import com.firebase.ui.firestore.paging.LoadingState;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -31,7 +29,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import hotchemi.android.rate.AppRate;
-import io.fabric.sdk.android.Fabric;
 import me.cutmail.disasterapp.R;
 import me.cutmail.disasterapp.model.Entry;
 import timber.log.Timber;
@@ -58,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
 
         setupLayout();
 
-        Fabric.with(this, new Crashlytics());
         setupRateDialog();
 
         AppRate.showRateDialogIfMeetsConditions(this);
@@ -144,12 +140,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openAbout() {
-        Answers.getInstance().logCustom(new CustomEvent("Open About"));
+        FirebaseAnalytics.getInstance(this).logEvent("open_about", null);
         startActivity(new Intent(this, AboutActivity.class));
     }
 
     private void openInquiry() {
-        Answers.getInstance().logCustom(new CustomEvent("Open Inquiry"));
+        FirebaseAnalytics.getInstance(this).logEvent("open_inquiry", null);
 
         try {
             Intent intent = new Intent(Intent.ACTION_SENDTO);
@@ -163,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openPlayStore() {
-        Answers.getInstance().logCustom(new CustomEvent("Open PlayStore"));
+        FirebaseAnalytics.getInstance(this).logEvent("open_playstore", null);
 
         try {
             Uri uri = Uri.parse("market://details?id=me.cutmail.disasterapp");

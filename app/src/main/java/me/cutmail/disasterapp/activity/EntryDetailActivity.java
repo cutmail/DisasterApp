@@ -5,16 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.webkit.WebView;
 
-import com.crashlytics.android.answers.Answers;
-import com.crashlytics.android.answers.ContentViewEvent;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.cutmail.disasterapp.R;
@@ -70,10 +69,10 @@ public class EntryDetailActivity extends AppCompatActivity {
     }
 
     private void trackContentViewEventWithAnswers() {
-        Answers.getInstance().logContentView(new ContentViewEvent()
-            .putContentName(title)
-            .putCustomAttribute("url", url)
-        );
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "title");
+        bundle.putString("url", url);
+        FirebaseAnalytics.getInstance(this).logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
     @SuppressLint("SetJavaScriptEnabled")
