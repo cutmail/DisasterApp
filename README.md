@@ -1,43 +1,43 @@
-# ![](app/src/main/res/drawable-xhdpi/ic_launcher.png) 地震・災害情報 (Earthquake & Disaster Information)
+# ![](app/src/main/res/drawable-xhdpi/ic_launcher.png) 地震・災害情報
 
 [![Build Status](https://app.bitrise.io/app/768666f9cbfb0cdb/status.svg?token=7UAkhytMM8p3ww6AdhidPw&branch=master)](https://app.bitrise.io/app/768666f9cbfb0cdb)
 
 <a href="https://play.google.com/store/apps/details?id=me.cutmail.disasterapp"><img width="200" alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/ja-play-badge.png" /></a>
 
-## Overview
+## 概要
 
-DisasterApp is an Android application that provides real-time earthquake and disaster information. The app aggregates and displays critical disaster-related entries to help users stay informed about emergency situations.
+地震・災害情報アプリは、リアルタイムで地震や災害に関する情報を提供するAndroidアプリケーションです。重要な災害関連の情報を集約・表示し、ユーザーが緊急事態について常に最新の情報を得られるようにします。
 
-## Features
+## 機能
 
-- Real-time disaster and earthquake information feed
-- Paginated list view for efficient browsing
-- Detailed entry view with external links
-- User-friendly interface with material design
-- Firebase integration for real-time data synchronization
-- Rate the app functionality
-- Contact/inquiry support
+- リアルタイムの災害・地震情報フィード
+- 効率的な閲覧のためのページング対応リスト表示
+- 外部リンク付き詳細情報ビュー
+- マテリアルデザインを採用したユーザーフレンドリーなインターフェース
+- Firebaseとの連携によるリアルタイムデータ同期
+- アプリ評価機能
+- お問い合わせサポート
 
-## Tech Stack
+## 技術スタック
 
-- **Language**: Java
-- **Build System**: Gradle
-- **Minimum SDK**: Android API level (as specified in app/build.gradle)
-- **Architecture**: Android SDK with Firebase backend
+- **言語**: Java
+- **ビルドシステム**: Gradle
+- **最小SDK**: Android APIレベル（app/build.gradleに記載）
+- **アーキテクチャ**: Android SDK + Firebaseバックエンド
 
-### Key Dependencies
+### 主要な依存ライブラリ
 
 - **Firebase**:
-  - Firestore for real-time database
-  - Analytics for usage tracking
-  - Crashlytics for crash reporting
-- **Firebase UI**: Firestore paging adapter
-- **AndroidX**: AppCompat, RecyclerView, Paging
-- **ButterKnife**: View binding
-- **Timber**: Logging
-- **AppRate**: In-app rating dialog
+  - Firestore（リアルタイムデータベース）
+  - Analytics（使用状況の追跡）
+  - Crashlytics（クラッシュレポート）
+- **Firebase UI**: Firestoreページングアダプター
+- **AndroidX**: AppCompat、RecyclerView、Paging
+- **ButterKnife**: ビューバインディング
+- **Timber**: ログ出力
+- **AppRate**: アプリ内評価ダイアログ
 
-## Project Structure
+## プロジェクト構成
 
 ```
 DisasterApp/
@@ -45,93 +45,93 @@ DisasterApp/
 │   └── src/
 │       ├── main/
 │       │   └── java/me/cutmail/disasterapp/
-│       │       ├── activity/         # UI Activities
+│       │       ├── activity/         # UIアクティビティ
 │       │       │   ├── MainActivity.java
 │       │       │   ├── EntryDetailActivity.java
 │       │       │   └── AboutActivity.java
-│       │       ├── model/            # Data models
+│       │       ├── model/            # データモデル
 │       │       │   └── Entry.java
 │       │       └── DisasterApplication.java
-│       └── androidTest/              # Instrumented tests
-├── fastlane/                         # Fastlane configuration
-├── .ci/                              # CI configuration
-├── build.gradle                      # Root build configuration
-└── settings.gradle                   # Gradle settings
+│       └── androidTest/              # インストルメンテーションテスト
+├── fastlane/                         # Fastlane設定
+├── .ci/                              # CI設定
+├── build.gradle                      # ルートビルド設定
+└── settings.gradle                   # Gradle設定
 ```
 
-## Setup & Build
+## セットアップとビルド
 
-### Prerequisites
+### 前提条件
 
-- Android Studio Arctic Fox or later
-- JDK 8 or higher
+- Android Studio Arctic Fox以降
+- JDK 8以上
 - Android SDK
-- Firebase project configuration
+- Firebaseプロジェクトの設定
 
-### Build Instructions
+### ビルド手順
 
-1. Clone the repository:
+1. リポジトリをクローン:
 ```bash
 git clone https://github.com/cutmail/DisasterApp.git
 cd DisasterApp
 ```
 
-2. Add your Firebase configuration:
-   - Download `google-services.json` from your Firebase console
-   - Place it in the `app/` directory
+2. Firebase設定ファイルを追加:
+   - Firebaseコンソールから`google-services.json`をダウンロード
+   - `app/`ディレクトリに配置
 
-3. Build the project:
+3. プロジェクトをビルド:
 ```bash
 ./gradlew build
 ```
 
-4. Run the app:
+4. アプリを実行:
 ```bash
 ./gradlew installDebug
 ```
 
-Or open the project in Android Studio and run it directly.
+または、Android Studioでプロジェクトを開いて直接実行することもできます。
 
-### Using Fastlane
+### Fastlaneの使用
 
-The project includes Fastlane for automated builds and deployments:
+このプロジェクトには自動ビルドとデプロイのためのFastlaneが含まれています:
 
 ```bash
 bundle install
 bundle exec fastlane [lane_name]
 ```
 
-## Development
+## 開発
 
-### Running Tests
+### テストの実行
 
 ```bash
-./gradlew test           # Run unit tests
-./gradlew connectedTest  # Run instrumented tests
+./gradlew test           # ユニットテストを実行
+./gradlew connectedTest  # インストルメンテーションテストを実行
 ```
 
 ### CI/CD
 
-This project uses Bitrise for continuous integration. Build status is displayed at the top of this README.
+このプロジェクトは継続的インテグレーションにBitriseを使用しています。ビルドステータスはこのREADMEの上部に表示されます。
 
-## Contributing
+## コントリビューション
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+コントリビューションを歓迎します！お気軽にプルリクエストを提出してください。
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+1. リポジトリをフォーク
+2. フィーチャーブランチを作成 (`git checkout -b feature/amazing-feature`)
+3. 変更をコミット (`git commit -m 'Add some amazing feature'`)
+4. ブランチにプッシュ (`git push origin feature/amazing-feature`)
+5. プルリクエストを作成
 
-## Contact
+## お問い合わせ
 
-For inquiries or support, please contact: cutmailapp@gmail.com
+お問い合わせやサポートについては、こちらまでご連絡ください: cutmailapp@gmail.com
 
-## License
+## ライセンス
 
-Please refer to the project's license file for usage terms and conditions.
+使用条件については、プロジェクトのライセンスファイルをご参照ください。
 
 ---
 
-Made with ❤️ for disaster preparedness and awareness
+防災と災害への備えのために ❤️
