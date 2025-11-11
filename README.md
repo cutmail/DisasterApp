@@ -1,6 +1,6 @@
 # ![](app/src/main/res/drawable-xhdpi/ic_launcher.png) 地震・災害情報
 
-[![Build Status](https://app.bitrise.io/app/768666f9cbfb0cdb/status.svg?token=7UAkhytMM8p3ww6AdhidPw&branch=master)](https://app.bitrise.io/app/768666f9cbfb0cdb)
+[![Build and Test](https://github.com/cutmail/DisasterApp/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/cutmail/DisasterApp/actions/workflows/build-and-test.yml)
 
 <a href="https://play.google.com/store/apps/details?id=me.cutmail.disasterapp"><img width="200" alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/apps/ja-play-badge.png" /></a>
 
@@ -112,7 +112,15 @@ bundle exec fastlane [lane_name]
 
 ### CI/CD
 
-このプロジェクトは継続的インテグレーションにBitriseを使用しています。ビルドステータスはこのREADMEの上部に表示されます。
+このプロジェクトは継続的インテグレーションにGitHub Actionsを使用しています。ビルドステータスはこのREADMEの上部に表示されます。
+
+ワークフローには以下が含まれます:
+- Gradleビルド
+- ユニットテストの実行
+- Lintチェック
+- ビルド成果物（APK）のアップロード
+
+ワークフローは`.github/workflows/build-and-test.yml`に定義されています。
 
 ## コントリビューション
 
