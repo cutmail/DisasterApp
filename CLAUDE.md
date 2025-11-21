@@ -1,220 +1,220 @@
-# CLAUDE.md - AI Assistant Guide for DisasterApp
+# CLAUDE.md - DisasterApp向けAIアシスタントガイド
 
-> **Last Updated:** 2025-11-20
-> **Version:** 1.9.3 (versionCode: 22)
+> **最終更新日:** 2025-11-20
+> **バージョン:** 1.9.3 (versionCode: 22)
 
-This document provides comprehensive guidance for AI assistants working on the DisasterApp codebase. It covers project structure, conventions, workflows, and best practices.
-
----
-
-## Table of Contents
-
-1. [Project Overview](#project-overview)
-2. [Codebase Structure](#codebase-structure)
-3. [Key Technologies](#key-technologies)
-4. [Development Setup](#development-setup)
-5. [Code Conventions](#code-conventions)
-6. [Testing Strategy](#testing-strategy)
-7. [Firebase Integration](#firebase-integration)
-8. [Build & Deployment](#build--deployment)
-9. [Git Workflow](#git-workflow)
-10. [Common Tasks](#common-tasks)
-11. [Troubleshooting](#troubleshooting)
+このドキュメントは、DisasterAppコードベースで作業するAIアシスタント向けの包括的なガイダンスを提供します。プロジェクト構造、規約、ワークフロー、ベストプラクティスを網羅しています。
 
 ---
 
-## Project Overview
+## 目次
 
-**DisasterApp (地震・災害情報)** is a Japanese Android application that provides real-time earthquake and disaster information to users.
-
-### Key Features
-- Real-time disaster/earthquake information feed from Firebase Firestore
-- Paginated list display with efficient loading (20 items/page)
-- WebView-based detail views with external links
-- Material Design UI with Japanese localization
-- Firebase Analytics tracking
-- In-app review prompts (AppRate library)
-- User inquiry support via email
-
-### Target Audience
-Japanese users seeking timely disaster information.
-
-### Business Model
-Free app available on Google Play Store.
+1. [プロジェクト概要](#プロジェクト概要)
+2. [コードベース構造](#コードベース構造)
+3. [主要技術](#主要技術)
+4. [開発環境セットアップ](#開発環境セットアップ)
+5. [コーディング規約](#コーディング規約)
+6. [テスト戦略](#テスト戦略)
+7. [Firebase連携](#firebase連携)
+8. [ビルドとデプロイ](#ビルドとデプロイ)
+9. [Gitワークフロー](#gitワークフロー)
+10. [よくある作業](#よくある作業)
+11. [トラブルシューティング](#トラブルシューティング)
 
 ---
 
-## Codebase Structure
+## プロジェクト概要
+
+**DisasterApp（地震・災害情報）**は、リアルタイムで地震・災害情報をユーザーに提供する日本語Androidアプリケーションです。
+
+### 主要機能
+- Firebase Firestoreからのリアルタイム災害・地震情報フィード
+- 効率的な読み込みを備えたページング対応リスト表示（20件/ページ）
+- 外部リンク付きWebViewベースの詳細ビュー
+- 日本語ローカライゼーション対応のマテリアルデザインUI
+- Firebase Analytics追跡
+- アプリ内レビュープロンプト（AppRateライブラリ）
+- メールによるユーザー問い合わせサポート
+
+### 対象ユーザー
+タイムリーな災害情報を求める日本のユーザー。
+
+### ビジネスモデル
+Google Playストアで提供される無料アプリ。
+
+---
+
+## コードベース構造
 
 ```
 DisasterApp/
 ├── .ci/
-│   └── google-services.json              # Mock Firebase config for CI
+│   └── google-services.json              # CI用モックFirebase設定
 ├── .github/
 │   └── workflows/
 │       └── build-and-test.yml            # GitHub Actions CI/CD
 ├── app/
-│   ├── build.gradle                       # App build configuration
-│   ├── proguard-rules.pro                 # ProGuard rules
+│   ├── build.gradle                       # アプリビルド設定
+│   ├── proguard-rules.pro                 # ProGuardルール
 │   └── src/
 │       ├── androidTest/
 │       │   └── java/me/cutmail/disasterapp/
-│       │       └── ApplicationTest.java   # Instrumentation tests
+│       │       └── ApplicationTest.java   # インストルメンテーションテスト
 │       └── main/
 │           ├── AndroidManifest.xml
 │           ├── java/me/cutmail/disasterapp/
-│           │   ├── DisasterApplication.java        # Application class
+│           │   ├── DisasterApplication.java        # Applicationクラス
 │           │   ├── activity/
-│           │   │   ├── MainActivity.java           # Main list screen
-│           │   │   ├── EntryDetailActivity.java    # Detail WebView
-│           │   │   └── AboutActivity.java          # About screen
+│           │   │   ├── MainActivity.java           # メインリスト画面
+│           │   │   ├── EntryDetailActivity.java    # 詳細WebView
+│           │   │   └── AboutActivity.java          # About画面
 │           │   └── model/
-│           │       └── Entry.java                  # Data model
+│           │       └── Entry.java                  # データモデル
 │           └── res/
-│               ├── layout/                         # XML layouts
-│               ├── menu/                           # Menu definitions
-│               ├── values/                         # Strings, styles, dimensions
+│               ├── layout/                         # XMLレイアウト
+│               ├── menu/                           # メニュー定義
+│               ├── values/                         # 文字列、スタイル、寸法
 │               └── xml/
-│                   └── global_tracker.xml          # Analytics config
+│                   └── global_tracker.xml          # Analytics設定
 ├── fastlane/
-│   ├── Appfile                            # Fastlane configuration
-│   ├── Fastfile                           # Deployment lanes
-│   └── metadata/android/ja-JP/            # Play Store metadata
-├── build.gradle                           # Root build configuration
-├── settings.gradle                        # Project settings
-├── gradle.properties                      # Gradle properties
-├── Gemfile                                # Ruby dependencies (Fastlane)
-└── README.md                              # Project documentation
+│   ├── Appfile                            # Fastlane設定
+│   ├── Fastfile                           # デプロイレーン
+│   └── metadata/android/ja-JP/            # Playストアメタデータ
+├── build.gradle                           # ルートビルド設定
+├── settings.gradle                        # プロジェクト設定
+├── gradle.properties                      # Gradleプロパティ
+├── Gemfile                                # Ruby依存関係（Fastlane）
+└── README.md                              # プロジェクトドキュメント
 ```
 
-### Java Package Structure
+### Javaパッケージ構造
 
-**Package:** `me.cutmail.disasterapp`
+**パッケージ:** `me.cutmail.disasterapp`
 
-- **Root:** `DisasterApplication.java` (Application class)
-- **activity/:** All Activity classes
-  - `MainActivity.java` (199 LOC) - Main screen with paged list
-  - `EntryDetailActivity.java` (110 LOC) - WebView detail screen
-  - `AboutActivity.java` (75 LOC) - About/license screen
-- **model/:** Data models
-  - `Entry.java` (15 LOC) - Firestore entry model (title, url)
+- **ルート:** `DisasterApplication.java`（Applicationクラス）
+- **activity/:** すべてのActivityクラス
+  - `MainActivity.java`（199行）- ページングリスト付きメイン画面
+  - `EntryDetailActivity.java`（110行）- WebView詳細画面
+  - `AboutActivity.java`（75行）- About/ライセンス画面
+- **model/:** データモデル
+  - `Entry.java`（15行）- Firestoreエントリーモデル（title、url）
 
-**Total Java Code:** ~443 lines across 6 files
+**Javaコード総行数:** 6ファイルで約443行
 
 ---
 
-## Key Technologies
+## 主要技術
 
-### Language & Build System
-- **Language:** Java 8
-- **Build Tool:** Gradle 6.5
-- **Android Gradle Plugin:** 4.1.1
-- **Build Tools:** 30.0.3
+### 言語とビルドシステム
+- **言語:** Java 8
+- **ビルドツール:** Gradle 6.5
+- **Android Gradleプラグイン:** 4.1.1
+- **ビルドツール:** 30.0.3
 
-### Android Configuration
+### Android設定
 - **compileSdkVersion:** 30
-- **minSdkVersion:** 26 (Android 8.0 Oreo)
-- **targetSdkVersion:** 30 (Android 11)
-- **AndroidX:** Enabled
+- **minSdkVersion:** 26（Android 8.0 Oreo）
+- **targetSdkVersion:** 30（Android 11）
+- **AndroidX:** 有効
 
-### Core Libraries
+### コアライブラリ
 
-#### Firebase Stack
+#### Firebaseスタック
 ```gradle
-firebase-ui-firestore: 7.1.1          // Paging adapter for Firestore
-firebase-firestore: 22.0.1            // Cloud Firestore database
-firebase-crashlytics: 17.3.0          // Crash reporting
-firebase-analytics: 18.0.0            // Analytics tracking
+firebase-ui-firestore: 7.1.1          // Firestore用ページングアダプター
+firebase-firestore: 22.0.1            // Cloud Firestoreデータベース
+firebase-crashlytics: 17.3.0          // クラッシュレポート
+firebase-analytics: 18.0.0            // Analytics追跡
 firebase-database: 19.6.0             // Realtime Database
-firebase-core: 18.0.0                 // Core Firebase SDK
+firebase-core: 18.0.0                 // Firebase Core SDK
 ```
 
-#### AndroidX Libraries
+#### AndroidXライブラリ
 ```gradle
-appcompat: 1.2.0                      // Backward compatibility
-paging-runtime: 2.1.2                 // Paging library
+appcompat: 1.2.0                      // 後方互換性
+paging-runtime: 2.1.2                 // ページングライブラリ
 ```
 
-#### UI & Utilities
+#### UIとユーティリティ
 ```gradle
-butterknife: 10.2.3                   // View binding (@BindView)
-timber: 4.7.1                         // Logging framework
-android-rate: 1.0.1                   // In-app review prompts
-play-services-oss-licenses: 17.0.0    // OSS license screen
+butterknife: 10.2.3                   // ビューバインディング（@BindView）
+timber: 4.7.1                         // ロギングフレームワーク
+android-rate: 1.0.1                   // アプリ内レビュープロンプト
+play-services-oss-licenses: 17.0.0    // OSSライセンス画面
 ```
 
-### Architecture Pattern
-**Traditional Android (No MVVM/MVP/MVI)**
-- Activities directly interact with Firebase
-- No ViewModel, Repository, or UseCase layers
-- No Dependency Injection framework
+### アーキテクチャパターン
+**従来型Android（MVVM/MVP/MVIなし）**
+- ActivityがFirebaseと直接やり取り
+- ViewModel、Repository、UseCaseレイヤーなし
+- Dependency Injectionフレームワークなし
 
 ---
 
-## Development Setup
+## 開発環境セットアップ
 
-### Prerequisites
-1. **Android Studio Arctic Fox or later**
-2. **JDK 8 or higher**
-3. **Android SDK with API 30**
-4. **Firebase project setup** (required for local development)
+### 前提条件
+1. **Android Studio Arctic Fox以降**
+2. **JDK 8以上**
+3. **API 30対応Android SDK**
+4. **Firebaseプロジェクトのセットアップ**（ローカル開発に必須）
 
-### Initial Setup Steps
+### 初期セットアップ手順
 
-#### 1. Clone Repository
+#### 1. リポジトリのクローン
 ```bash
 git clone https://github.com/cutmail/DisasterApp.git
 cd DisasterApp
 ```
 
-#### 2. Configure Firebase (CRITICAL)
-**The app will NOT build without this step.**
+#### 2. Firebaseの設定（重要）
+**このステップなしではアプリはビルドできません。**
 
-1. Go to [Firebase Console](https://console.firebase.google.com/)
-2. Select the DisasterApp project (or create a new one for testing)
-3. Download `google-services.json` from Project Settings
-4. Place it in `app/google-services.json`
+1. [Firebaseコンソール](https://console.firebase.google.com/)にアクセス
+2. DisasterAppプロジェクトを選択（テスト用に新規作成も可）
+3. プロジェクト設定から`google-services.json`をダウンロード
+4. `app/google-services.json`に配置
 
-**Note:** This file is gitignored for security. CI builds use a mock version from `.ci/google-services.json`.
+**注意:** このファイルはセキュリティのためgitignoreされています。CIビルドでは`.ci/google-services.json`のモック版を使用します。
 
-#### 3. Build the Project
+#### 3. プロジェクトのビルド
 ```bash
 ./gradlew build
 ```
 
-#### 4. Run Tests
+#### 4. テストの実行
 ```bash
-./gradlew test           # Unit tests (currently minimal)
-./gradlew connectedTest  # Instrumentation tests
+./gradlew test           # ユニットテスト（現在は最小限）
+./gradlew connectedTest  # インストルメンテーションテスト
 ```
 
-#### 5. Install Debug APK
+#### 5. デバッグAPKのインストール
 ```bash
 ./gradlew installDebug
 ```
 
-Or run directly from Android Studio.
+または、Android Studioから直接実行。
 
-### Fastlane Setup (Optional)
-For automated deployments:
+### Fastlaneセットアップ（オプション）
+自動デプロイ用:
 
 ```bash
 bundle install
-bundle exec fastlane test    # Run tests
-bundle exec fastlane beta    # Deploy to Crashlytics Beta
-bundle exec fastlane deploy  # Deploy to Play Store
+bundle exec fastlane test    # テスト実行
+bundle exec fastlane beta    # Crashlytics Betaへデプロイ
+bundle exec fastlane deploy  # Playストアへデプロイ
 ```
 
-**Note:** Requires `fastlane/service-account.json` (gitignored) and signing credentials.
+**注意:** `fastlane/service-account.json`（gitignore）と署名認証情報が必要です。
 
 ---
 
-## Code Conventions
+## コーディング規約
 
-### Java Style
+### Javaスタイル
 
-#### 1. View Binding with ButterKnife
-**Pattern:**
+#### 1. ButterKnifeによるビューバインディング
+**パターン:**
 ```java
 @BindView(R.id.view_id) ViewType mViewName;
 
@@ -226,39 +226,39 @@ protected void onCreate(Bundle savedInstanceState) {
 }
 ```
 
-**Examples:**
-- `MainActivity.java:39-43` - RecyclerView and ProgressBar binding
-- `AboutActivity.java:21-22` - Version TextView binding
-- `EntryDetailActivity.java:29` - WebView binding
+**例:**
+- `MainActivity.java:39-43` - RecyclerViewとProgressBarのバインディング
+- `AboutActivity.java:21-22` - バージョンTextViewのバインディング
+- `EntryDetailActivity.java:29` - WebViewのバインディング
 
-**Click Listeners:**
+**クリックリスナー:**
 ```java
 @OnClick(R.id.button_id)
 void onButtonClick() {
-    // Handle click
+    // クリック処理
 }
 ```
 
-#### 2. Logging with Timber
-**Setup:** `DisasterApplication.setupTimber()` (line 22)
+#### 2. Timberによるロギング
+**セットアップ:** `DisasterApplication.setupTimber()`（22行目）
 
-**Usage:**
+**使用法:**
 ```java
 Timber.d("Debug message");
 Timber.i("Info message");
 Timber.w("Warning message");
 Timber.e(exception, "Error message");
-Timber.e(exception);  // Just log exception
+Timber.e(exception);  // 例外のみをログ
 ```
 
-**Production Behavior:**
-- Debug builds: Logs to Logcat (all levels)
-- Release builds: Logs WARN+ to Firebase Crashlytics
+**本番環境での動作:**
+- デバッグビルド: Logcatにログ出力（全レベル）
+- リリースビルド: WARN以上をFirebase Crashlyticsにログ出力
 
-**See:** `DisasterApplication.java:30-43` for CrashReportingTree implementation
+**参照:** `DisasterApplication.java:30-43`のCrashReportingTree実装
 
-#### 3. Intent Factory Pattern
-**Pattern:**
+#### 3. Intentファクトリーパターン
+**パターン:**
 ```java
 public static Intent createIntent(Context context, String param1, String param2) {
     Intent intent = new Intent(context, TargetActivity.class);
@@ -268,10 +268,10 @@ public static Intent createIntent(Context context, String param1, String param2)
 }
 ```
 
-**Example:** `EntryDetailActivity.createIntent()` at line 32-37
+**例:** `EntryDetailActivity.createIntent()`（32-37行目）
 
-#### 4. Firebase Paging Pattern
-**See:** `MainActivity.java:91-102`
+#### 4. Firebaseページングパターン
+**参照:** `MainActivity.java:91-102`
 
 ```java
 Query query = FirebaseFirestore.getInstance()
@@ -290,77 +290,77 @@ FirestorePagingOptions<Model> options = new FirestorePagingOptions.Builder<Model
     .build();
 ```
 
-#### 5. Error Handling
-**Pattern:**
+#### 5. エラーハンドリング
+**パターン:**
 ```java
 try {
-    // Operation that might fail
+    // 失敗する可能性のある操作
 } catch (Exception e) {
     Timber.e(e);
-    // No user-facing error messages (current pattern)
+    // ユーザー向けエラーメッセージなし（現在のパターン）
 }
 ```
 
-**Note:** This app silently handles errors. Consider adding user feedback for better UX.
+**注意:** このアプリはエラーをサイレント処理します。UX向上のためユーザーフィードバック追加を検討してください。
 
-### Resource Naming Conventions
+### リソース命名規則
 
-#### Layout Files
-- `activity_*.xml` - Activity layouts
-- `*_list_item.xml` - RecyclerView item layouts
-- `fragment_*.xml` - Fragment layouts (if any added)
+#### レイアウトファイル
+- `activity_*.xml` - Activityレイアウト
+- `*_list_item.xml` - RecyclerViewアイテムレイアウト
+- `fragment_*.xml` - Fragmentレイアウト（追加された場合）
 
-#### View IDs
-- Lowercase with underscores: `@id/paging_recycler`, `@id/paging_loading`
-- Descriptive names indicating view type
+#### ビューID
+- アンダースコア付き小文字: `@id/paging_recycler`、`@id/paging_loading`
+- ビュータイプを示す説明的な名前
 
-#### Strings
-- All strings in Japanese (primary language)
-- Keys in English: `action_inquiry`, `action_review`, `title_activity_about`
+#### 文字列
+- すべて日本語（主要言語）
+- キーは英語: `action_inquiry`、`action_review`、`title_activity_about`
 
-#### Dimensions
-- Standard margins: `activity_horizontal_margin` (16dp), `activity_vertical_margin` (16dp)
-- Tablet overrides in `values-w820dp/` (64dp horizontal margin)
+#### 寸法
+- 標準マージン: `activity_horizontal_margin`（16dp）、`activity_vertical_margin`（16dp）
+- `values-w820dp/`でタブレット用オーバーライド（64dp水平マージン）
 
 ---
 
-## Testing Strategy
+## テスト戦略
 
-### Current State
-**Testing coverage is minimal** and needs significant improvement.
+### 現状
+**テストカバレッジは最小限**で大幅な改善が必要です。
 
-### Existing Tests
-**File:** `app/src/androidTest/java/me/cutmail/disasterapp/ApplicationTest.java`
-- Uses deprecated `ApplicationTestCase<Application>`
-- Only 13 lines, no actual test methods
-- Needs modernization
+### 既存テスト
+**ファイル:** `app/src/androidTest/java/me/cutmail/disasterapp/ApplicationTest.java`
+- 非推奨の`ApplicationTestCase<Application>`を使用
+- わずか13行、実際のテストメソッドなし
+- 近代化が必要
 
-### Missing Test Infrastructure
-- No `app/src/test/` directory (no unit tests)
-- No modern testing frameworks (JUnit4, Espresso, Mockito, Robolectric)
-- No test coverage measurement
+### 不足しているテストインフラ
+- `app/src/test/`ディレクトリなし（ユニットテストなし）
+- 最新のテストフレームワークなし（JUnit4、Espresso、Mockito、Robolectric）
+- テストカバレッジ測定なし
 
-### Recommended Testing Approach
+### 推奨テストアプローチ
 
-#### 1. Unit Tests (To Be Added)
-**Directory:** `app/src/test/java/me/cutmail/disasterapp/`
+#### 1. ユニットテスト（追加予定）
+**ディレクトリ:** `app/src/test/java/me/cutmail/disasterapp/`
 
-**Frameworks to add:**
+**追加すべきフレームワーク:**
 ```gradle
 testImplementation 'junit:junit:4.13.2'
 testImplementation 'org.mockito:mockito-core:4.0.0'
 testImplementation 'androidx.arch.core:core-testing:2.1.0'
 ```
 
-**Test targets:**
-- `Entry.java` - Model validation
-- Utility methods
-- Intent creation methods
+**テスト対象:**
+- `Entry.java` - モデル検証
+- ユーティリティメソッド
+- Intent作成メソッド
 
-#### 2. Instrumentation Tests (To Be Modernized)
-**Directory:** `app/src/androidTest/java/me/cutmail/disasterapp/`
+#### 2. インストルメンテーションテスト（近代化予定）
+**ディレクトリ:** `app/src/androidTest/java/me/cutmail/disasterapp/`
 
-**Frameworks to add:**
+**追加すべきフレームワーク:**
 ```gradle
 androidTestImplementation 'androidx.test.ext:junit:1.1.3'
 androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
@@ -368,141 +368,141 @@ androidTestImplementation 'androidx.test:runner:1.4.0'
 androidTestImplementation 'androidx.test:rules:1.4.0'
 ```
 
-**Test targets:**
-- MainActivity UI interactions
-- Navigation flows
-- Firebase Firestore queries (use emulator)
+**テスト対象:**
+- MainActivityのUIインタラクション
+- ナビゲーションフロー
+- Firebase Firestoreクエリ（エミュレータ使用）
 
-#### 3. Running Tests
+#### 3. テストの実行
 
-**Unit tests:**
+**ユニットテスト:**
 ```bash
 ./gradlew test --stacktrace
 ```
 
-**Instrumentation tests:**
+**インストルメンテーションテスト:**
 ```bash
 ./gradlew connectedTest --stacktrace
 ```
 
-**CI/CD Integration:**
-Tests run automatically on GitHub Actions for all PRs and pushes to `main`, `master`, `develop`.
+**CI/CD統合:**
+`main`、`master`、`develop`へのすべてのPRとプッシュでGitHub Actionsが自動実行されます。
 
 ---
 
-## Firebase Integration
+## Firebase連携
 
-### Services Used
+### 使用サービス
 
-#### 1. Firestore (Primary Database)
-**Collection:** `entries`
+#### 1. Firestore（プライマリデータベース）
+**コレクション:** `entries`
 
-**Schema:**
+**スキーマ:**
 ```javascript
 {
-  title: String,    // Disaster entry title
-  url: String       // External link URL
+  title: String,    // 災害エントリータイトル
+  url: String       // 外部リンクURL
 }
 ```
 
-**Query:** `orderBy("title")` (see `MainActivity.java:91`)
+**クエリ:** `orderBy("title")`（`MainActivity.java:91`参照）
 
-**Access pattern:**
-- Read-only from app
-- Paging: 20 items per page, 10 prefetch distance
-- Lifecycle-aware adapter handles loading/error states
+**アクセスパターン:**
+- アプリからは読み取り専用
+- ページング: 20件/ページ、10件プリフェッチ距離
+- ライフサイクル対応アダプターが読み込み/エラー状態を処理
 
-**Code reference:** `MainActivity.java:91-129`
+**コード参照:** `MainActivity.java:91-129`
 
 #### 2. Realtime Database
-**Usage:** Persistence enabled (`DisasterApplication.java:18`)
+**使用:** 永続化有効（`DisasterApplication.java:18`）
 
-**Purpose:** Offline data caching (if used)
+**目的:** オフラインデータキャッシング（使用されている場合）
 
-**Note:** No explicit Realtime Database references in code; may be legacy or for future use.
+**注意:** コード内に明示的なRealtime Databaseの参照なし。レガシーまたは将来の使用のためと思われます。
 
 #### 3. Crashlytics
-**Integration:** Custom `CrashReportingTree` logs WARN+ messages and exceptions
+**統合:** カスタム`CrashReportingTree`がWARN以上のメッセージと例外をログ
 
-**Automatic reporting:**
-- All caught exceptions logged with `Timber.e(exception)`
-- Uncaught exceptions automatically reported
+**自動レポート:**
+- `Timber.e(exception)`でログされたすべてのキャッチ済み例外
+- 未キャッチ例外は自動レポート
 
-**Code reference:** `DisasterApplication.java:30-43`
+**コード参照:** `DisasterApplication.java:30-43`
 
 #### 4. Analytics
-**Events tracked:**
-- `open_about` - User opens About screen
-- `open_inquiry` - User initiates inquiry email
-- `open_playstore` - User opens app in Play Store
-- `SELECT_CONTENT` - User views entry detail (with item_name and url)
+**追跡されるイベント:**
+- `open_about` - ユーザーがAbout画面を開く
+- `open_inquiry` - ユーザーが問い合わせメールを開始
+- `open_playstore` - ユーザーがPlayストアでアプリを開く
+- `SELECT_CONTENT` - ユーザーがエントリー詳細を表示（item_nameとurlを含む）
 
-**Code references:**
+**コード参照:**
 - `MainActivity.java:143, 148, 162`
 - `EntryDetailActivity.java:71-76`
 
-**Legacy:** Google Analytics config (`res/xml/global_tracker.xml`) with tracking ID `UA-3314949-13`
+**レガシー:** Google Analytics設定（`res/xml/global_tracker.xml`）、トラッキングID `UA-3314949-13`
 
-### Configuration Files
+### 設定ファイル
 
-#### Production Configuration
-**File:** `app/google-services.json`
-- **GITIGNORED** (see `.gitignore:45`)
-- Must be obtained from Firebase Console
-- Required for local builds
+#### 本番環境設定
+**ファイル:** `app/google-services.json`
+- **GITIGNORED**（`.gitignore:45`参照）
+- Firebaseコンソールから取得必須
+- ローカルビルドに必須
 
-#### CI Mock Configuration
-**File:** `.ci/google-services.json`
-- Committed to repo for reference
-- Used as template in GitHub Actions workflow
+#### CIモック設定
+**ファイル:** `.ci/google-services.json`
+- リポジトリにコミット済み（参照用）
+- GitHub Actionsワークフローでテンプレートとして使用
 
-**GitHub Actions auto-generates mock config:**
-- See `.github/workflows/build-and-test.yml:26-69`
-- Mock project: `mock-project`
-- Mock API key: `AIzaSyDummyKeyForCIBuildOnly123456789`
+**GitHub Actionsがモック設定を自動生成:**
+- `.github/workflows/build-and-test.yml:26-69`参照
+- モックプロジェクト: `mock-project`
+- モックAPIキー: `AIzaSyDummyKeyForCIBuildOnly123456789`
 
-### Firebase Console Access
-**Contact:** cutmailapp@gmail.com (project owner)
+### Firebaseコンソールアクセス
+**連絡先:** cutmailapp@gmail.com（プロジェクトオーナー）
 
 ---
 
-## Build & Deployment
+## ビルドとデプロイ
 
-### Build Variants
-- **debug** - Development builds (no ProGuard)
-- **release** - Production builds (ProGuard enabled)
+### ビルドバリアント
+- **debug** - 開発ビルド（ProGuardなし）
+- **release** - 本番ビルド（ProGuard有効）
 
-### Build Commands
+### ビルドコマンド
 
-#### Debug Build
+#### デバッグビルド
 ```bash
 ./gradlew assembleDebug
-# Output: app/build/outputs/apk/debug/app-debug.apk
+# 出力: app/build/outputs/apk/debug/app-debug.apk
 ```
 
-#### Release Build
+#### リリースビルド
 ```bash
 ./gradlew assembleRelease
-# Output: app/build/outputs/apk/release/app-release.apk
-# Requires signing credentials
+# 出力: app/build/outputs/apk/release/app-release.apk
+# 署名認証情報が必要
 ```
 
-#### Install Debug to Device
+#### デバイスへのデバッグインストール
 ```bash
 ./gradlew installDebug
 ```
 
-### ProGuard Configuration
-**File:** `app/proguard-rules.pro`
+### ProGuard設定
+**ファイル:** `app/proguard-rules.pro`
 
-**Current state:** Minimal rules (18 lines)
+**現状:** 最小限のルール（18行）
 
-**Note:** If adding libraries with reflection or JNI, add keep rules here.
+**注意:** リフレクションやJNIを使用するライブラリを追加する場合は、ここにkeepルールを追加してください。
 
-### Signing Configuration
-**For release builds:**
+### 署名設定
+**リリースビルド用:**
 
-Set environment variables:
+環境変数を設定:
 ```bash
 export SIGNING_STORE_FILE=/path/to/releasekey.keystore
 export SIGNING_STORE_PASSWORD=store_password
@@ -510,7 +510,7 @@ export SIGNING_KEY_ALIAS=key_alias
 export SIGNING_KEY_PASSWORD=key_password
 ```
 
-Or configure in `local.properties` (gitignored):
+または`local.properties`（gitignore）で設定:
 ```properties
 signing.storeFile=/path/to/releasekey.keystore
 signing.storePassword=store_password
@@ -518,204 +518,204 @@ signing.keyAlias=key_alias
 signing.keyPassword=key_password
 ```
 
-**Note:** `releasekey.keystore` is gitignored (`.gitignore:18`).
+**注意:** `releasekey.keystore`はgitignoreされています（`.gitignore:18`）。
 
-### Fastlane Deployment
+### Fastlaneデプロイ
 
-#### Test Lane
+#### テストレーン
 ```bash
 bundle exec fastlane test
 ```
-Runs: `./gradlew test`
+実行内容: `./gradlew test`
 
-#### Beta Lane (Crashlytics Beta)
+#### ベータレーン（Crashlytics Beta）
 ```bash
 bundle exec fastlane beta
 ```
-- Builds release APK
-- Uploads to Crashlytics Beta distribution
+- リリースAPKをビルド
+- Crashlytics Beta配布にアップロード
 
-**Requires:** `fastlane/service-account.json` (gitignored)
+**必要なもの:** `fastlane/service-account.json`（gitignore）
 
-#### Deploy Lane (Google Play)
+#### デプロイレーン（Google Play）
 ```bash
 bundle exec fastlane deploy
 ```
-- Builds signed release APK
-- Uploads to Google Play Store
+- 署名済みリリースAPKをビルド
+- Google Playストアにアップロード
 
-**Requires:**
-- Service account JSON
-- Signing credentials (see above)
+**必要なもの:**
+- サービスアカウントJSON
+- 署名認証情報（上記参照）
 
-### CI/CD Pipeline
+### CI/CDパイプライン
 
-#### GitHub Actions Workflow
-**File:** `.github/workflows/build-and-test.yml`
+#### GitHub Actionsワークフロー
+**ファイル:** `.github/workflows/build-and-test.yml`
 
-**Triggers:**
-- Push to: `main`, `master`, `develop`
-- Pull requests to: `main`, `master`, `develop`
+**トリガー:**
+- `main`、`master`、`develop`へのプッシュ
+- `main`、`master`、`develop`へのプルリクエスト
 
-**Steps:**
-1. Checkout code
-2. Set up JDK 11
-3. Grant execute permission to `gradlew`
-4. **Create mock `google-services.json`** (critical for CI)
-5. Cache Gradle packages
-6. Build with Gradle
-7. Run unit tests
-8. Run lint checks
-9. Upload build reports (on failure)
-10. Upload debug APK (on success, retained 7 days)
+**ステップ:**
+1. コードのチェックアウト
+2. JDK 11のセットアップ
+3. `gradlew`に実行権限付与
+4. **モック`google-services.json`の作成**（CIに必須）
+5. Gradleパッケージのキャッシュ
+6. Gradleでビルド
+7. ユニットテストの実行
+8. Lintチェックの実行
+9. ビルドレポートのアップロード（失敗時）
+10. デバッグAPKのアップロード（成功時、7日間保持）
 
-**Badge:** [![Build and Test](https://github.com/cutmail/DisasterApp/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/cutmail/DisasterApp/actions/workflows/build-and-test.yml)
+**バッジ:** [![Build and Test](https://github.com/cutmail/DisasterApp/actions/workflows/build-and-test.yml/badge.svg)](https://github.com/cutmail/DisasterApp/actions/workflows/build-and-test.yml)
 
-**Artifacts:**
-- Build reports (on failure): `app/build/reports/`, `app/build/test-results/`
-- Debug APK (on success): `app/build/outputs/apk/debug/*.apk`
+**成果物:**
+- ビルドレポート（失敗時）: `app/build/reports/`、`app/build/test-results/`
+- デバッグAPK（成功時）: `app/build/outputs/apk/debug/*.apk`
 
 ---
 
-## Git Workflow
+## Gitワークフロー
 
-### Branch Naming Conventions
+### ブランチ命名規則
 
-#### For AI Assistants (Claude)
-**Pattern:** `claude/<task-description>-<unique-session-id>`
+#### AIアシスタント（Claude）用
+**パターン:** `claude/<タスク説明>-<ユニークセッションID>`
 
-**Examples:**
+**例:**
 - `claude/update-readme-011CV2vJirVvQ5kUvcjpZMqV`
 - `claude/add-github-actions-workflow-011CV1p38as5EaPUbcnJhmPg`
 - `claude/claude-md-mi83c5kntvqxskzy-0147XmQSYNyWVHPozAsMZ9UR`
 
-**IMPORTANT:** Branches must:
-- Start with `claude/`
-- End with session ID matching the current session
-- Use `-u` flag when pushing: `git push -u origin <branch-name>`
-- Pushing to incorrectly named branches will fail with 403
+**重要:** ブランチは以下の条件を満たす必要があります:
+- `claude/`で始まる
+- 現在のセッションIDで終わる
+- プッシュ時に`-u`フラグを使用: `git push -u origin <branch-name>`
+- 正しく命名されていないブランチへのプッシュは403エラーになります
 
-#### For Human Contributors
-**Patterns:**
-- `feature/<feature-name>` - New features
-- `fix/<bug-description>` - Bug fixes
-- `update-<component>` - Dependency/component updates
-- `dependabot/<package>-<version>` - Dependabot PRs
+#### 人間の貢献者用
+**パターン:**
+- `feature/<機能名>` - 新機能
+- `fix/<バグ説明>` - バグ修正
+- `update-<コンポーネント>` - 依存関係/コンポーネント更新
+- `dependabot/<パッケージ>-<バージョン>` - DependabotのPR
 
-**Examples:**
+**例:**
 - `update-libraries`
 - `update-butterknife`
 - `dependabot/bundler/fastlane-2.156.1`
 
-### Main Branches
-- **develop** - Staging branch (per `.git-pr-release`)
-- **main/master** - Production branch
+### メインブランチ
+- **develop** - ステージングブランチ（`.git-pr-release`による）
+- **main/master** - 本番ブランチ
 
-**Note:** Current checkout may not have main/master locally.
+**注意:** 現在のチェックアウトではmain/masterがローカルにない場合があります。
 
-### Commit Message Conventions
+### コミットメッセージ規約
 
-#### Style
-- **Imperative mood** (Add, Update, Fix, Delete, Migrate)
-- Concise and descriptive
-- No trailing periods
-- Lowercase start (except proper nouns)
+#### スタイル
+- **命令形**（Add、Update、Fix、Delete、Migrate）
+- 簡潔で説明的
+- 末尾にピリオドなし
+- 小文字で開始（固有名詞を除く）
 
-#### Patterns
+#### パターン
 
-**Feature additions:**
+**機能追加:**
 ```
 Add GitHub Actions workflow for build and test
 Add missing Firebase Firestore dependency
 ```
 
-**Updates:**
+**更新:**
 ```
 Update firebase libs
 Update buildToolsVersion 30.0.3
 Update README to reflect GitHub Actions workflow
 ```
 
-**Fixes:**
+**修正:**
 ```
 Fix CI build by adding mock google-services.json
 ```
 
-**Version bumps:**
+**バージョンバンプ:**
 ```
 Bump up 1.9.3 (22)
 Bump addressable from 2.7.0 to 2.8.1
 ```
 
-**Removals:**
+**削除:**
 ```
 Delete fabric script
 ```
 
-**Migrations:**
+**移行:**
 ```
 Migrate to Firebase from Fabric
 ```
 
-**Merge commits:**
+**マージコミット:**
 ```
 Merge pull request #79 from cutmail/claude/update-readme-<id>
 ```
 
-#### Language
-- **Mixed:** English and Japanese
-- **Example:** `README を日本語化` (Japanize README)
+#### 言語
+- **混在:** 英語と日本語
+- **例:** `README を日本語化`
 
-### Pull Request Workflow
+### プルリクエストワークフロー
 
-1. **Create feature branch** from `develop`
-2. **Make changes** and commit regularly
-3. **Push to origin:** `git push -u origin <branch-name>`
-4. **Create Pull Request** to `develop` (or `main` for hotfixes)
-5. **CI checks** run automatically
-6. **Review and merge** once checks pass
+1. **フィーチャーブランチを作成**（`develop`から）
+2. **変更を加えて定期的にコミット**
+3. **originにプッシュ:** `git push -u origin <branch-name>`
+4. **プルリクエストを作成**（`develop`へ、または緊急修正は`main`へ）
+5. **CIチェック**が自動実行
+6. **レビューしてマージ**（チェック通過後）
 
-**Automated tooling:**
-- `.git-pr-release` config for automated PR creation from develop to main
+**自動化ツール:**
+- `.git-pr-release`設定によるdevelopからmainへの自動PR作成
 
-### Git Operations Best Practices
+### Git操作のベストプラクティス
 
-#### Push with Retry Logic
+#### リトライロジック付きプッシュ
 ```bash
-# Initial push (with -u for new branches)
+# 初回プッシュ（新規ブランチには-u付き）
 git push -u origin <branch-name>
 
-# If network errors occur, retry up to 4 times with exponential backoff:
-# Wait 2s, retry
-# Wait 4s, retry
-# Wait 8s, retry
-# Wait 16s, retry
+# ネットワークエラーが発生した場合、指数バックオフで最大4回リトライ:
+# 2秒待機、リトライ
+# 4秒待機、リトライ
+# 8秒待機、リトライ
+# 16秒待機、リトライ
 ```
 
-#### Fetch Specific Branches
+#### 特定ブランチのフェッチ
 ```bash
-# Prefer specific branch fetches
+# 特定ブランチのフェッチを推奨
 git fetch origin <branch-name>
 
-# Pull with retry on network failures
+# ネットワーク障害時のリトライ付きプル
 git pull origin <branch-name>
 ```
 
 ---
 
-## Common Tasks
+## よくある作業
 
-### Task 1: Add a New Activity
+### タスク1: 新しいActivityの追加
 
-#### Steps:
-1. **Create activity class** in `app/src/main/java/me/cutmail/disasterapp/activity/`
-2. **Create layout XML** in `app/src/main/res/layout/`
-3. **Add to AndroidManifest.xml**
-4. **Add strings** to `res/values/strings.xml`
-5. **Use ButterKnife** for view binding
-6. **Setup Timber** for logging
+#### 手順:
+1. **activityクラスを作成** `app/src/main/java/me/cutmail/disasterapp/activity/`に
+2. **レイアウトXMLを作成** `app/src/main/res/layout/`に
+3. **AndroidManifest.xmlに追加**
+4. **文字列を追加** `res/values/strings.xml`に
+5. **ButterKnifeを使用** ビューバインディングに
+6. **Timberをセットアップ** ロギングに
 
-#### Example:
+#### 例:
 ```java
 package me.cutmail.disasterapp.activity;
 
@@ -749,14 +749,14 @@ public class NewActivity extends AppCompatActivity {
 </activity>
 ```
 
-### Task 2: Add Firebase Analytics Event
+### タスク2: Firebase Analyticsイベントの追加
 
-#### Steps:
-1. **Get FirebaseAnalytics instance** in activity
-2. **Create Bundle** with event parameters
-3. **Log event** with descriptive name
+#### 手順:
+1. **FirebaseAnalyticsインスタンスを取得** Activity内で
+2. **Bundleを作成** イベントパラメータを含む
+3. **イベントをログ** 説明的な名前で
 
-#### Example:
+#### 例:
 ```java
 private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -775,34 +775,34 @@ private void trackCustomEvent(String itemName) {
 }
 ```
 
-**See:** `MainActivity.java:141-144, 146-150, 160-164` for examples.
+**参照:** `MainActivity.java:141-144, 146-150, 160-164`の例
 
-### Task 3: Update Dependencies
+### タスク3: 依存関係の更新
 
-#### Steps:
-1. **Edit `app/build.gradle`**
-2. **Update version numbers**
-3. **Sync Gradle** (`./gradlew --refresh-dependencies`)
-4. **Test build** (`./gradlew build`)
-5. **Run tests** (`./gradlew test`)
-6. **Commit with message:** `Update <library-name> to <version>`
+#### 手順:
+1. **`app/build.gradle`を編集**
+2. **バージョン番号を更新**
+3. **Gradleを同期** (`./gradlew --refresh-dependencies`)
+4. **ビルドをテスト** (`./gradlew build`)
+5. **テストを実行** (`./gradlew test`)
+6. **コミットメッセージ:** `Update <library-name> to <version>`
 
-#### Check for outdated dependencies:
+#### 古い依存関係のチェック:
 ```bash
 ./gradlew dependencyUpdates
 ```
 
-**Note:** Consider impact on minSdkVersion and AndroidX compatibility.
+**注意:** minSdkVersionとAndroidX互換性への影響を考慮してください。
 
-### Task 4: Add a Firestore Query
+### タスク4: Firestoreクエリの追加
 
-#### Steps:
-1. **Get Firestore instance**
-2. **Build query** with collection, where, orderBy
-3. **Use FirestorePagingAdapter** for RecyclerView
-4. **Handle loading/error states**
+#### 手順:
+1. **Firestoreインスタンスを取得**
+2. **クエリを構築** collection、where、orderByで
+3. **FirestorePagingAdapterを使用** RecyclerView用に
+4. **読み込み/エラー状態を処理**
 
-#### Example (see MainActivity.java:91-129):
+#### 例（MainActivity.java:91-129参照）:
 ```java
 Query query = FirebaseFirestore.getInstance()
     .collection("collection_name")
@@ -826,35 +826,35 @@ FirestorePagingAdapter<Entry, ViewHolder> adapter =
         protected void onBindViewHolder(@NonNull ViewHolder holder,
                                        int position,
                                        @NonNull Entry model) {
-            // Bind data to view holder
+            // ビューホルダーにデータをバインド
         }
 
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent,
                                             int viewType) {
-            // Create view holder
+            // ビューホルダーを作成
         }
 
         @Override
         protected void onLoadingStateChanged(@NonNull LoadingState state) {
-            // Handle loading state (LOADING_INITIAL, LOADING_MORE, LOADED, ERROR, FINISHED)
+            // 読み込み状態を処理（LOADING_INITIAL、LOADING_MORE、LOADED、ERROR、FINISHED）
         }
     };
 
 recyclerView.setAdapter(adapter);
 ```
 
-### Task 5: Add Menu Items
+### タスク5: メニューアイテムの追加
 
-#### Steps:
-1. **Create/edit menu XML** in `res/menu/`
-2. **Add string resources** in `res/values/strings.xml`
-3. **Inflate menu** in `onCreateOptionsMenu()`
-4. **Handle clicks** in `onOptionsItemSelected()`
-5. **Optional:** Track with Firebase Analytics
+#### 手順:
+1. **メニューXMLを作成/編集** `res/menu/`に
+2. **文字列リソースを追加** `res/values/strings.xml`に
+3. **メニューをインフレート** `onCreateOptionsMenu()`で
+4. **クリックを処理** `onOptionsItemSelected()`で
+5. **オプション:** Firebase Analyticsで追跡
 
-#### Example (see MainActivity.java:71-89, 131-172):
+#### 例（MainActivity.java:71-89、131-172参照）:
 ```java
 @Override
 public boolean onCreateOptionsMenu(Menu menu) {
@@ -867,12 +867,12 @@ public boolean onOptionsItemSelected(MenuItem item) {
     int id = item.getItemId();
 
     if (id == R.id.action_item) {
-        // Track with analytics
+        // Analyticsで追跡
         Bundle bundle = new Bundle();
         bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, "action_item");
         mFirebaseAnalytics.logEvent("menu_action", bundle);
 
-        // Handle action
+        // アクションを処理
         Intent intent = new Intent(this, TargetActivity.class);
         startActivity(intent);
         return true;
@@ -882,177 +882,177 @@ public boolean onOptionsItemSelected(MenuItem item) {
 }
 ```
 
-### Task 6: Update Play Store Metadata
+### タスク6: Playストアメタデータの更新
 
-#### Location:
+#### 場所:
 `fastlane/metadata/android/ja-JP/`
 
-#### Files:
-- `title.txt` - App title (30 chars max)
-- `short_description.txt` - Short description (80 chars max)
-- `full_description.txt` - Full description (4000 chars max)
-- `changelogs/<version-code>.txt` - Release notes (500 chars max)
+#### ファイル:
+- `title.txt` - アプリタイトル（最大30文字）
+- `short_description.txt` - 短い説明（最大80文字）
+- `full_description.txt` - 完全な説明（最大4000文字）
+- `changelogs/<version-code>.txt` - リリースノート（最大500文字）
 
-#### Images:
+#### 画像:
 - `images/icon.png` - 512x512 PNG
 - `images/featureGraphic.png` - 1024x500 PNG
-- `images/phoneScreenshots/<N>_ja-JP.png` - Phone screenshots
+- `images/phoneScreenshots/<N>_ja-JP.png` - スマートフォンスクリーンショット
 
-#### Deploy to Play Store:
+#### Playストアへのデプロイ:
 ```bash
 bundle exec fastlane deploy
 ```
 
-**Note:** All text is in Japanese. Use appropriate business tone.
+**注意:** すべてのテキストは日本語です。適切なビジネストーンを使用してください。
 
 ---
 
-## Troubleshooting
+## トラブルシューティング
 
-### Issue 1: Build Fails with "google-services.json Missing"
+### 問題1: "google-services.json Missing"でビルドが失敗
 
-**Symptom:**
+**症状:**
 ```
 File google-services.json is missing. The Google Services Plugin cannot function without it.
 ```
 
-**Solution:**
-1. Download `google-services.json` from Firebase Console
-2. Place in `app/google-services.json`
-3. Ensure it's NOT committed (check `.gitignore`)
+**解決策:**
+1. Firebaseコンソールから`google-services.json`をダウンロード
+2. `app/google-services.json`に配置
+3. コミットされていないことを確認（`.gitignore`をチェック）
 
-**For CI:**
-- Mock config is auto-generated in GitHub Actions
-- See `.github/workflows/build-and-test.yml:26-69`
+**CI用:**
+- モック設定はGitHub Actionsで自動生成
+- `.github/workflows/build-and-test.yml:26-69`参照
 
-### Issue 2: ButterKnife Binding Fails
+### 問題2: ButterKnifeバインディングが失敗
 
-**Symptom:**
+**症状:**
 ```
-NullPointerException when accessing @BindView annotated fields
+@BindViewアノテーションフィールドにアクセス時にNullPointerException
 ```
 
-**Solution:**
-1. Ensure `ButterKnife.bind(this)` is called in `onCreate()` AFTER `setContentView()`
-2. Check view IDs match between Java and XML
-3. Verify annotation processor is in `build.gradle`:
+**解決策:**
+1. `ButterKnife.bind(this)`が`onCreate()`内で`setContentView()`の**後**に呼ばれていることを確認
+2. ビューIDがJavaとXML間で一致していることを確認
+3. `build.gradle`にアノテーションプロセッサがあることを確認:
    ```gradle
    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
    ```
-4. Rebuild project: `./gradlew clean build`
+4. プロジェクトを再ビルド: `./gradlew clean build`
 
-### Issue 3: Firebase Queries Return Empty
+### 問題3: Firestoreクエリが空を返す
 
-**Symptom:**
-- RecyclerView shows no data
-- No errors in logs
+**症状:**
+- RecyclerViewにデータが表示されない
+- ログにエラーなし
 
-**Solution:**
-1. Check Firestore collection name matches query (`"entries"`)
-2. Verify Firestore Rules allow read access
-3. Check field names match model (`title`, `url`)
-4. Enable Firebase debug logging:
+**解決策:**
+1. Firestoreコレクション名がクエリと一致しているか確認（`"entries"`）
+2. Firestoreルールが読み取りアクセスを許可しているか確認
+3. フィールド名がモデルと一致しているか確認（`title`、`url`）
+4. Firebaseデバッグロギングを有効化:
    ```java
    FirebaseFirestore.setLoggingEnabled(true);
    ```
-5. Check network connectivity
-6. Verify `google-services.json` is correct
+5. ネットワーク接続を確認
+6. `google-services.json`が正しいことを確認
 
-### Issue 4: Git Push Fails with 403
+### 問題4: Git Pushが403で失敗
 
-**Symptom:**
+**症状:**
 ```
 error: failed to push some refs (403 Forbidden)
 ```
 
-**Solution for Claude branches:**
-- Ensure branch name starts with `claude/` and ends with session ID
-- Use `-u` flag: `git push -u origin claude/<task>-<session-id>`
-- Verify session ID matches current session
+**Claudeブランチの解決策:**
+- ブランチ名が`claude/`で始まりセッションIDで終わることを確認
+- `-u`フラグを使用: `git push -u origin claude/<task>-<session-id>`
+- セッションIDが現在のセッションと一致しているか確認
 
-**Solution for human contributors:**
-- Check repository permissions
-- Verify authentication credentials
-- Try re-authenticating: `git config --global credential.helper cache`
+**人間の貢献者の解決策:**
+- リポジトリ権限を確認
+- 認証情報を確認
+- 再認証を試行: `git config --global credential.helper cache`
 
-### Issue 5: ProGuard Breaks Release Build
+### 問題5: ProGuardがリリースビルドを破壊
 
-**Symptom:**
-- Release APK crashes on startup
-- ClassNotFoundException or MethodNotFoundException
+**症状:**
+- リリースAPKが起動時にクラッシュ
+- ClassNotFoundExceptionまたはMethodNotFoundException
 
-**Solution:**
-1. Add keep rules to `app/proguard-rules.pro`:
+**解決策:**
+1. `app/proguard-rules.pro`にkeepルールを追加:
    ```proguard
    -keep class me.cutmail.disasterapp.model.** { *; }
    -keepclassmembers class * {
        @butterknife.* <methods>;
    }
    ```
-2. Check library documentation for required ProGuard rules
-3. Test release builds frequently: `./gradlew assembleRelease`
-4. Use ProGuard mapping file to deobfuscate crashes: `app/build/outputs/mapping/release/mapping.txt`
+2. ライブラリドキュメントで必要なProGuardルールを確認
+3. リリースビルドを頻繁にテスト: `./gradlew assembleRelease`
+4. ProGuardマッピングファイルでクラッシュを復号: `app/build/outputs/mapping/release/mapping.txt`
 
-### Issue 6: Fastlane Deployment Fails
+### 問題6: Fastlaneデプロイが失敗
 
-**Symptom:**
+**症状:**
 ```
 Google Api Error: Forbidden - The current user has insufficient permissions
 ```
 
-**Solution:**
-1. Verify `fastlane/service-account.json` exists and is valid
-2. Check service account has required Play Console permissions:
-   - Release Manager or Admin role
-3. Ensure API access is enabled in Play Console settings
-4. Verify package name matches: `me.cutmail.disasterapp`
+**解決策:**
+1. `fastlane/service-account.json`が存在し有効か確認
+2. サービスアカウントが必要なPlayコンソール権限を持っているか確認:
+   - Release ManagerまたはAdmin役割
+3. Playコンソール設定でAPIアクセスが有効か確認
+4. パッケージ名が一致するか確認: `me.cutmail.disasterapp`
 
-### Issue 7: Gradle Build Slow
+### 問題7: Gradleビルドが遅い
 
-**Solutions:**
-1. **Enable Gradle daemon** (usually enabled by default)
+**解決策:**
+1. **Gradleデーモンを有効化**（通常はデフォルトで有効）
    ```properties
    # gradle.properties
    org.gradle.daemon=true
    ```
 
-2. **Increase heap size:**
+2. **ヒープサイズを増やす:**
    ```properties
    # gradle.properties
    org.gradle.jvmargs=-Xmx4096m -XX:MaxPermSize=512m
    ```
 
-3. **Use build cache:**
+3. **ビルドキャッシュを使用:**
    ```properties
    # gradle.properties
    org.gradle.caching=true
    ```
 
-4. **Clean Gradle cache:**
+4. **Gradleキャッシュをクリア:**
    ```bash
    ./gradlew clean
    rm -rf ~/.gradle/caches/
    ```
 
-5. **Upgrade Gradle wrapper:**
+5. **Gradleラッパーをアップグレード:**
    ```bash
    ./gradlew wrapper --gradle-version=7.0
    ```
 
-### Issue 8: AndroidX Migration Issues
+### 問題8: AndroidX移行の問題
 
-**Symptom:**
-- Duplicate class errors
-- NoClassDefFoundError for support library classes
+**症状:**
+- 重複クラスエラー
+- サポートライブラリクラスのNoClassDefFoundError
 
-**Solution:**
-1. Verify `gradle.properties` has:
+**解決策:**
+1. `gradle.properties`に以下があることを確認:
    ```properties
    android.useAndroidX=true
    android.enableJetifier=true
    ```
-2. Ensure NO legacy support library dependencies in `build.gradle`
-3. Run Jetifier manually if needed:
+2. `build.gradle`にレガシーサポートライブラリ依存関係が**ない**ことを確認
+3. 必要に応じてJetifierを手動実行:
    ```bash
    ./gradlew clean
    ./gradlew build --refresh-dependencies
@@ -1060,161 +1060,161 @@ Google Api Error: Forbidden - The current user has insufficient permissions
 
 ---
 
-## Security Considerations
+## セキュリティ考慮事項
 
-### Current Security Notes
+### 現在のセキュリティ注意事項
 
-#### 1. Cleartext Traffic Enabled
-**Location:** `AndroidManifest.xml:20`
+#### 1. クリアテキストトラフィック有効
+**場所:** `AndroidManifest.xml:20`
 ```xml
 android:usesCleartextTraffic="true"
 ```
 
-**Risk:** Allows unencrypted HTTP connections
+**リスク:** 暗号化されていないHTTP接続を許可
 
-**Recommendation:** Disable unless required; use HTTPS only
+**推奨:** 必要でない限り無効化。HTTPSのみを使用
 
-#### 2. Gitignored Secrets
-**Important files NOT in version control:**
-- `app/google-services.json` - Firebase configuration
-- `fastlane/service-account.json` - Play Store deployment credentials
-- `releasekey.keystore` - APK signing key
-- `local.properties` - Local configuration
-- `.envrc` - Environment variables
+#### 2. Gitignoreされたシークレット
+**バージョン管理に含まれない重要なファイル:**
+- `app/google-services.json` - Firebase設定
+- `fastlane/service-account.json` - Playストアデプロイ認証情報
+- `releasekey.keystore` - APK署名キー
+- `local.properties` - ローカル設定
+- `.envrc` - 環境変数
 
-**Always verify these are gitignored before committing.**
+**コミット前にこれらがgitignoreされていることを必ず確認してください。**
 
-#### 3. ProGuard in Production
-- Enabled for release builds
-- Obfuscates code
-- Minimal configuration (may need enhancement)
+#### 3. 本番環境でのProGuard
+- リリースビルドで有効
+- コードを難読化
+- 最小限の設定（強化が必要な場合あり）
 
-#### 4. Permission Usage
-**Declared permissions:**
-- `INTERNET` - Network access (required)
-- `ACCESS_NETWORK_STATE` - Network state checking (required)
-- Custom `C2D_MESSAGE` signature permission (legacy, may be removable)
+#### 4. 権限使用
+**宣言された権限:**
+- `INTERNET` - ネットワークアクセス（必須）
+- `ACCESS_NETWORK_STATE` - ネットワーク状態チェック（必須）
+- カスタム`C2D_MESSAGE`署名権限（レガシー、削除可能かも）
 
-**No dangerous permissions required** - good security posture.
-
----
-
-## Performance Optimization
-
-### Current Optimizations
-1. **Firebase Firestore paging** - Efficient data loading (20 items/page)
-2. **Firebase Realtime Database persistence** - Offline caching
-3. **RecyclerView** - Efficient list rendering
-4. **ProGuard** - Code shrinking and obfuscation in release
-
-### Potential Improvements
-1. **Image loading** - Add Glide or Picasso if images are added
-2. **Network caching** - Implement HTTP cache for WebViews
-3. **Database indexing** - Ensure Firestore indexes for queries
-4. **Lazy loading** - Already implemented via paging
-5. **Memory leaks** - Consider using LeakCanary for detection
+**危険な権限は不要** - 良好なセキュリティ姿勢。
 
 ---
 
-## Future Enhancements
+## パフォーマンス最適化
 
-### Recommended Modernizations
-1. **Architecture:** Migrate to MVVM with Jetpack ViewModel and LiveData
-2. **View Binding:** Replace ButterKnife with ViewBinding (official Android solution)
-3. **Dependency Injection:** Add Hilt or Koin
-4. **Testing:** Comprehensive unit and UI test coverage
-5. **Kotlin:** Consider Kotlin migration for modern Android development
-6. **Jetpack Compose:** Consider UI modernization (long-term)
-7. **Room Database:** Add local caching layer for offline-first architecture
-8. **WorkManager:** Replace any background services (if added)
+### 現在の最適化
+1. **Firebase Firestoreページング** - 効率的なデータ読み込み（20件/ページ）
+2. **Firebase Realtime Database永続化** - オフラインキャッシング
+3. **RecyclerView** - 効率的なリストレンダリング
+4. **ProGuard** - リリースでのコード縮小と難読化
 
-### Feature Ideas
-1. Push notifications for urgent disaster alerts
-2. Map view showing disaster locations
-3. User customization (filter by region, disaster type)
-4. Offline mode with local storage
-5. Widget for home screen quick access
-6. Dark mode support
+### 潜在的な改善
+1. **画像読み込み** - 画像追加時はGlideまたはPicassoを追加
+2. **ネットワークキャッシング** - WebView用HTTPキャッシュを実装
+3. **データベースインデックス** - クエリ用Firestoreインデックスを確保
+4. **遅延読み込み** - ページングで既に実装済み
+5. **メモリリーク** - 検出用LeakCanaryの使用を検討
 
 ---
 
-## Resources
+## 将来の拡張
 
-### Documentation
-- **README.md** - Project overview and setup (Japanese)
-- **This file (CLAUDE.md)** - AI assistant guide
+### 推奨される近代化
+1. **アーキテクチャ:** Jetpack ViewModelとLiveDataでMVVMへ移行
+2. **ビューバインディング:** ButterKnifeをViewBinding（公式Androidソリューション）に置き換え
+3. **依存性注入:** HiltまたはKoinを追加
+4. **テスト:** 包括的なユニットとUIテストカバレッジ
+5. **Kotlin:** モダンなAndroid開発のためKotlin移行を検討
+6. **Jetpack Compose:** UI近代化を検討（長期的）
+7. **Room Database:** オフラインファーストアーキテクチャ用ローカルキャッシングレイヤーを追加
+8. **WorkManager:** バックグラウンドサービスを置き換え（追加された場合）
+
+### 機能アイデア
+1. 緊急災害警報のプッシュ通知
+2. 災害発生場所を示すマップビュー
+3. ユーザーカスタマイズ（地域、災害タイプでフィルタ）
+4. ローカルストレージ付きオフラインモード
+5. ホーム画面クイックアクセス用ウィジェット
+6. ダークモードサポート
+
+---
+
+## リソース
+
+### ドキュメント
+- **README.md** - プロジェクト概要とセットアップ（日本語）
+- **このファイル（CLAUDE.md）** - AIアシスタントガイド
 - **Fastlane README** - `fastlane/README.md`
 
-### External Links
-- [Google Play Store Listing](https://play.google.com/store/apps/details?id=me.cutmail.disasterapp)
-- [GitHub Repository](https://github.com/cutmail/DisasterApp)
-- [GitHub Actions Workflows](https://github.com/cutmail/DisasterApp/actions)
+### 外部リンク
+- [Google Playストア掲載](https://play.google.com/store/apps/details?id=me.cutmail.disasterapp)
+- [GitHubリポジトリ](https://github.com/cutmail/DisasterApp)
+- [GitHub Actionsワークフロー](https://github.com/cutmail/DisasterApp/actions)
 
-### Key Documentation Sites
+### 主要ドキュメントサイト
 - [Android Developer Docs](https://developer.android.com/)
-- [Firebase Documentation](https://firebase.google.com/docs)
-- [ButterKnife Documentation](https://jakewharton.github.io/butterknife/)
-- [Timber Documentation](https://github.com/JakeWharton/timber)
-- [Fastlane Documentation](https://docs.fastlane.tools/)
+- [Firebaseドキュメント](https://firebase.google.com/docs)
+- [ButterKnifeドキュメント](https://jakewharton.github.io/butterknife/)
+- [Timberドキュメント](https://github.com/JakeWharton/timber)
+- [Fastlaneドキュメント](https://docs.fastlane.tools/)
 
-### Contact
-**Support Email:** cutmailapp@gmail.com
-
----
-
-## Changelog
-
-### Version 1.9.3 (versionCode: 22)
-- Latest stable release
-- Firebase integration fully functional
-- GitHub Actions CI/CD implemented
-
-### Recent Major Changes
-- **2024:** Migrated from Fabric to Firebase Crashlytics
-- **2024:** Added GitHub Actions workflow for CI/CD
-- **2024:** README japanized and documentation improved
-- **2024:** Updated to AndroidX and latest Firebase SDKs
+### 連絡先
+**サポートメール:** cutmailapp@gmail.com
 
 ---
 
-## Contributing Guidelines
+## 変更履歴
 
-### For AI Assistants
-1. **Read this entire document** before making changes
-2. **Follow existing code conventions** (ButterKnife, Timber, patterns)
-3. **Update tests** if test infrastructure is added
-4. **Run lint checks** before committing: `./gradlew lint`
-5. **Test locally** before pushing
-6. **Write clear commit messages** following established patterns
-7. **Update this document** if making architectural changes
+### バージョン 1.9.3（versionCode: 22）
+- 最新安定版リリース
+- Firebase統合が完全に機能
+- GitHub Actions CI/CD実装
 
-### For Human Contributors
-1. **Fork the repository**
-2. **Create feature branch** from `develop`
-3. **Follow Java code style** (Android Studio default)
-4. **Add tests** for new features (once test infrastructure exists)
-5. **Update README.md** if user-facing changes
-6. **Submit pull request** to `develop` branch
-7. **Wait for CI checks** to pass
-
-### Code Review Checklist
-- [ ] Builds successfully (`./gradlew build`)
-- [ ] Tests pass (`./gradlew test`)
-- [ ] Lint checks pass (`./gradlew lint`)
-- [ ] No new warnings introduced
-- [ ] Follows existing code patterns
-- [ ] Firebase Analytics events added (if new user actions)
-- [ ] Timber logging used appropriately
-- [ ] No hardcoded strings (use `strings.xml`)
-- [ ] No committed secrets or credentials
-- [ ] ProGuard rules added (if new reflection/JNI usage)
+### 最近の主要な変更
+- **2024年:** FabricからFirebase Crashlyticsへ移行
+- **2024年:** CI/CD用GitHub Actionsワークフロー追加
+- **2024年:** README日本語化とドキュメント改善
+- **2024年:** AndroidXと最新Firebase SDKへ更新
 
 ---
 
-**Last updated by:** Claude AI Assistant
-**Date:** 2025-11-20
-**Contact:** cutmailapp@gmail.com
+## コントリビューションガイドライン
+
+### AIアシスタント向け
+1. **このドキュメント全体を読む** 変更前に
+2. **既存のコード規約に従う**（ButterKnife、Timber、パターン）
+3. **テストを更新** テストインフラが追加された場合
+4. **Lintチェックを実行** コミット前に: `./gradlew lint`
+5. **ローカルでテスト** プッシュ前に
+6. **明確なコミットメッセージを書く** 確立されたパターンに従う
+7. **このドキュメントを更新** アーキテクチャ変更を行った場合
+
+### 人間の貢献者向け
+1. **リポジトリをフォーク**
+2. **フィーチャーブランチを作成** `develop`から
+3. **Javaコードスタイルに従う**（Android Studioデフォルト）
+4. **テストを追加** 新機能用（テストインフラが存在する場合）
+5. **README.mdを更新** ユーザー向け変更の場合
+6. **プルリクエストを送信** `develop`ブランチへ
+7. **CIチェックを待つ** 通過を確認
+
+### コードレビューチェックリスト
+- [ ] ビルド成功（`./gradlew build`）
+- [ ] テスト合格（`./gradlew test`）
+- [ ] Lintチェック合格（`./gradlew lint`）
+- [ ] 新しい警告が導入されていない
+- [ ] 既存のコードパターンに従っている
+- [ ] Firebase Analyticsイベント追加済み（新しいユーザーアクションの場合）
+- [ ] Timberロギングを適切に使用
+- [ ] ハードコード文字列なし（`strings.xml`を使用）
+- [ ] シークレットや認証情報がコミットされていない
+- [ ] ProGuardルール追加済み（新しいリフレクション/JNI使用の場合）
 
 ---
 
-*This document is intended for AI assistants and human developers working on DisasterApp. Keep it updated as the codebase evolves.*
+**最終更新者:** Claude AIアシスタント
+**日付:** 2025-11-20
+**連絡先:** cutmailapp@gmail.com
+
+---
+
+*このドキュメントは、DisasterAppで作業するAIアシスタントと人間の開発者を対象としています。コードベースの進化に合わせて更新してください。*
